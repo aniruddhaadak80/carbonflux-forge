@@ -1,0 +1,11 @@
+{
+  "name": "sample",
+  "version": "0.1.0",
+  "description": "A minimal working plugin that demonstrates the manifest contract.",
+  "enabled": true,
+  "priority": 50,
+  "capabilities": ["sample.echo"],
+  "engines": {
+    "@carbonfluxforge": "0.1.0"
+  }
+}

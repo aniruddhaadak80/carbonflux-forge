@@ -1,0 +1,897 @@
+{
+  "generatedBy": "scripts/build-fixtures.mjs",
+  "engine": "carbonflux_forge/1",
+  "note": "Every verdict below was produced by the Python engine. The web app renders this file; it does not recompute anything.",
+  "period": "2026-Q1",
+  "census": {
+    "total": 8,
+    "byStatus": {
+      "unsupported": 5,
+      "circular": 1,
+      "supported": 2
+    }
+  },
+  "totals": {
+    "reportedTonnes": "131.799304",
+    "recomputedTonnes": "108.774059"
+  },
+  "graph": {
+    "nodes": [
+      {
+        "id": "scope1-stationary-gas",
+        "type": "claim",
+        "address": "sha256:eacf11723db2b57a2d84bc816e6d97bcf13b3eb002f347c7d4d11109b5b45004",
+        "kind": "scope-1",
+        "trusted": true
+      },
+      {
+        "id": "scope1-fleet-diesel",
+        "type": "claim",
+        "address": "sha256:f2286c02c56187fe18e22cef6ac6c9bbc033f595cc46864df25e914ff655c133",
+        "kind": "scope-1",
+        "trusted": true
+      },
+      {
+        "id": "scope2-purchased-electricity",
+        "type": "claim",
+        "address": "sha256:82490efe623ef05f4a17fae987711738043a63eb2b5eb7038da80f7b873cf056",
+        "kind": "scope-2",
+        "trusted": true
+      },
+      {
+        "id": "scope3-business-travel-flights",
+        "type": "claim",
+        "address": "sha256:755cc065939ef551790867e57025fb32562e790406ff5831410ec2d1e722f751",
+        "kind": "scope-3",
+        "trusted": true
+      },
+      {
+        "id": "scope3-logistics-lorry",
+        "type": "claim",
+        "address": "sha256:4344bac069129b698464ab3bfad2662d9944b06a38158e8ba8dee05fef9b82f7",
+        "kind": "scope-3",
+        "trusted": true
+      },
+      {
+        "id": "scope2-tenant-electricity",
+        "type": "claim",
+        "address": "sha256:099da9925568306e46fbbe87a13da719fbbc4160dd504bfc447b8cefbb9f6c29",
+        "kind": "scope-2",
+        "trusted": true
+      },
+      {
+        "id": "scope2-purchased-electricity-verified",
+        "type": "claim",
+        "address": "sha256:34c2d0e56afd864237bdbbff032ffee64ce90cb634e64bbfc8edf011a00ca69c",
+        "kind": "scope-2",
+        "trusted": true
+      },
+      {
+        "id": "scope1-standby-generator",
+        "type": "claim",
+        "address": "sha256:5cc95aaa34a9c6bb20a5c87a5b9222d369b804302a3d0d3b36cf985e2aef1f1d",
+        "kind": "scope-1",
+        "trusted": true
+      },
+      {
+        "id": "sha256:ccc56fe9f9cd1f80477bd5e0001a3c866c0a8a38173671e3945b3b9759a9fd0b",
+        "type": "document",
+        "address": "sha256:ccc56fe9f9cd1f80477bd5e0001a3c866c0a8a38173671e3945b3b9759a9fd0b",
+        "kind": "activity-data",
+        "trusted": true
+      },
+      {
+        "id": "sha256:8898bfa0cdef2c6e2591abad9c68266de63b21a4d984172c0b939220b2d52ba7",
+        "type": "document",
+        "address": "sha256:8898bfa0cdef2c6e2591abad9c68266de63b21a4d984172c0b939220b2d52ba7",
+        "kind": "emission-factor",
+        "trusted": true
+      },
+      {
+        "id": "sha256:43f96588fd25e08c2eec79a44d3061be135195b2850bea7b8c5290242df72d01",
+        "type": "document",
+        "address": "sha256:43f96588fd25e08c2eec79a44d3061be135195b2850bea7b8c5290242df72d01",
+        "kind": "emission-factor",
+        "trusted": true
+      },
+      {
+        "id": "sha256:ff1b7990a177a037d512d245a77dafeddb422b9ebfbfcc2ad2f8b289498760dc",
+        "type": "document",
+        "address": "sha256:ff1b7990a177a037d512d245a77dafeddb422b9ebfbfcc2ad2f8b289498760dc",
+        "kind": "emission-factor",
+        "trusted": true
+      },
+      {
+        "id": "sha256:8ca5b73a9c824f9c69eaabede3256422fe43ce52fcead878efbe073d525294c6",
+        "type": "document",
+        "address": "sha256:8ca5b73a9c824f9c69eaabede3256422fe43ce52fcead878efbe073d525294c6",
+        "kind": "activity-data",
+        "trusted": true
+      },
+      {
+        "id": "sha256:83799c1cdfdb23ad93f43fcdd359472d38016c2d0bec2f9b66e8a1bf83e4c821",
+        "type": "document",
+        "address": "sha256:83799c1cdfdb23ad93f43fcdd359472d38016c2d0bec2f9b66e8a1bf83e4c821",
+        "kind": "emission-factor",
+        "trusted": true
+      },
+      {
+        "id": "sha256:c6f947cee976d807dd9356913aab830f36f857bc1b1e33a86309f4a6002eafc9",
+        "type": "document",
+        "address": "sha256:c6f947cee976d807dd9356913aab830f36f857bc1b1e33a86309f4a6002eafc9",
+        "kind": "method",
+        "trusted": false
+      },
+      {
+        "id": "sha256:b1a3b72dcdac2e3f64f8a5177724e02f0cd74662e44129f0b729636f871c2fe3",
+        "type": "document",
+        "address": "sha256:b1a3b72dcdac2e3f64f8a5177724e02f0cd74662e44129f0b729636f871c2fe3",
+        "kind": "report",
+        "trusted": true
+      },
+      {
+        "id": "sha256:b28149f2dc6bfb3c57fc8fa5e1cbb13960ee7a8f194aa0ddf0e4de79f0813b39",
+        "type": "document",
+        "address": "sha256:b28149f2dc6bfb3c57fc8fa5e1cbb13960ee7a8f194aa0ddf0e4de79f0813b39",
+        "kind": "emission-factor",
+        "trusted": false
+      },
+      {
+        "id": "sha256:e56c9b13bbb320b332c9de993390492f31ff40ac50e6f1cc536d2a418ddff9c9",
+        "type": "document",
+        "address": "sha256:e56c9b13bbb320b332c9de993390492f31ff40ac50e6f1cc536d2a418ddff9c9",
+        "kind": "activity-data",
+        "trusted": true
+      },
+      {
+        "id": "sha256:8fd21d2164fcd2d3d3a9ecb7ea4975572d828617868cdc9aad271cf6acba1b54",
+        "type": "document",
+        "address": "sha256:8fd21d2164fcd2d3d3a9ecb7ea4975572d828617868cdc9aad271cf6acba1b54",
+        "kind": "activity-data",
+        "trusted": true
+      },
+      {
+        "id": "sha256:09e01c2241b0d9e41b639aae0da2e9572cfa42c00da9669b9c7ca429ab40a0d8",
+        "type": "document",
+        "address": "sha256:09e01c2241b0d9e41b639aae0da2e9572cfa42c00da9669b9c7ca429ab40a0d8",
+        "kind": "calibration",
+        "trusted": true
+      },
+      {
+        "id": "sha256:68161cfcbc24aecabcf1fe0848a697b2db7595d44473b0c0243b612b9dfcaa1d",
+        "type": "document",
+        "address": "sha256:68161cfcbc24aecabcf1fe0848a697b2db7595d44473b0c0243b612b9dfcaa1d",
+        "kind": "method",
+        "trusted": true
+      },
+      {
+        "id": "sha256:9ce5b01e1d7e87d7fcaed0fcc7f529e63a5ea3f30d0fa243c2473a414b9a9263",
+        "type": "document",
+        "address": "sha256:9ce5b01e1d7e87d7fcaed0fcc7f529e63a5ea3f30d0fa243c2473a414b9a9263",
+        "kind": "activity-data",
+        "trusted": true
+      }
+    ],
+    "edges": [
+      {
+        "from": "scope1-stationary-gas",
+        "to": "sha256:ccc56fe9f9cd1f80477bd5e0001a3c866c0a8a38173671e3945b3b9759a9fd0b",
+        "relation": "derived-from"
+      },
+      {
+        "from": "sha256:ccc56fe9f9cd1f80477bd5e0001a3c866c0a8a38173671e3945b3b9759a9fd0b",
+        "to": "sha256:68161cfcbc24aecabcf1fe0848a697b2db7595d44473b0c0243b612b9dfcaa1d",
+        "relation": "derived-from"
+      },
+      {
+        "from": "scope1-stationary-gas",
+        "to": "sha256:8898bfa0cdef2c6e2591abad9c68266de63b21a4d984172c0b939220b2d52ba7",
+        "relation": "derived-from"
+      },
+      {
+        "from": "scope1-fleet-diesel",
+        "to": "sha256:8ca5b73a9c824f9c69eaabede3256422fe43ce52fcead878efbe073d525294c6",
+        "relation": "derived-from"
+      },
+      {
+        "from": "scope1-fleet-diesel",
+        "to": "sha256:ff1b7990a177a037d512d245a77dafeddb422b9ebfbfcc2ad2f8b289498760dc",
+        "relation": "derived-from"
+      },
+      {
+        "from": "scope2-purchased-electricity",
+        "to": "sha256:8898bfa0cdef2c6e2591abad9c68266de63b21a4d984172c0b939220b2d52ba7",
+        "relation": "derived-from"
+      },
+      {
+        "from": "sha256:43f96588fd25e08c2eec79a44d3061be135195b2850bea7b8c5290242df72d01",
+        "to": "sha256:8898bfa0cdef2c6e2591abad9c68266de63b21a4d984172c0b939220b2d52ba7",
+        "relation": "supersedes"
+      },
+      {
+        "from": "scope3-business-travel-flights",
+        "to": "sha256:83799c1cdfdb23ad93f43fcdd359472d38016c2d0bec2f9b66e8a1bf83e4c821",
+        "relation": "derived-from"
+      },
+      {
+        "from": "scope3-business-travel-flights",
+        "to": "sha256:c6f947cee976d807dd9356913aab830f36f857bc1b1e33a86309f4a6002eafc9",
+        "relation": "derived-from"
+      },
+      {
+        "from": "sha256:c6f947cee976d807dd9356913aab830f36f857bc1b1e33a86309f4a6002eafc9",
+        "to": "scope3-business-travel-flights",
+        "relation": "derived-from"
+      },
+      {
+        "from": "sha256:c6f947cee976d807dd9356913aab830f36f857bc1b1e33a86309f4a6002eafc9",
+        "to": "sha256:b1a3b72dcdac2e3f64f8a5177724e02f0cd74662e44129f0b729636f871c2fe3",
+        "relation": "derived-from"
+      },
+      {
+        "from": "scope3-logistics-lorry",
+        "to": "sha256:b28149f2dc6bfb3c57fc8fa5e1cbb13960ee7a8f194aa0ddf0e4de79f0813b39",
+        "relation": "derived-from"
+      },
+      {
+        "from": "scope2-tenant-electricity",
+        "to": "sha256:e56c9b13bbb320b332c9de993390492f31ff40ac50e6f1cc536d2a418ddff9c9",
+        "relation": "derived-from"
+      },
+      {
+        "from": "sha256:e56c9b13bbb320b332c9de993390492f31ff40ac50e6f1cc536d2a418ddff9c9",
+        "to": "sha256:8fd21d2164fcd2d3d3a9ecb7ea4975572d828617868cdc9aad271cf6acba1b54",
+        "relation": "measured-by"
+      },
+      {
+        "from": "scope2-purchased-electricity-verified",
+        "to": "sha256:8fd21d2164fcd2d3d3a9ecb7ea4975572d828617868cdc9aad271cf6acba1b54",
+        "relation": "derived-from"
+      },
+      {
+        "from": "scope2-purchased-electricity-verified",
+        "to": "sha256:43f96588fd25e08c2eec79a44d3061be135195b2850bea7b8c5290242df72d01",
+        "relation": "derived-from"
+      },
+      {
+        "from": "sha256:8fd21d2164fcd2d3d3a9ecb7ea4975572d828617868cdc9aad271cf6acba1b54",
+        "to": "sha256:09e01c2241b0d9e41b639aae0da2e9572cfa42c00da9669b9c7ca429ab40a0d8",
+        "relation": "calibrated-by"
+      },
+      {
+        "from": "sha256:09e01c2241b0d9e41b639aae0da2e9572cfa42c00da9669b9c7ca429ab40a0d8",
+        "to": "sha256:68161cfcbc24aecabcf1fe0848a697b2db7595d44473b0c0243b612b9dfcaa1d",
+        "relation": "derived-from"
+      },
+      {
+        "from": "scope1-standby-generator",
+        "to": "sha256:9ce5b01e1d7e87d7fcaed0fcc7f529e63a5ea3f30d0fa243c2473a414b9a9263",
+        "relation": "derived-from"
+      },
+      {
+        "from": "scope1-standby-generator",
+        "to": "sha256:ff1b7990a177a037d512d245a77dafeddb422b9ebfbfcc2ad2f8b289498760dc",
+        "relation": "derived-from"
+      },
+      {
+        "from": "sha256:9ce5b01e1d7e87d7fcaed0fcc7f529e63a5ea3f30d0fa243c2473a414b9a9263",
+        "to": "sha256:68161cfcbc24aecabcf1fe0848a697b2db7595d44473b0c0243b612b9dfcaa1d",
+        "relation": "derived-from"
+      }
+    ]
+  },
+  "documents": [
+    {
+      "address": "sha256:ccc56fe9f9cd1f80477bd5e0001a3c866c0a8a38173671e3945b3b9759a9fd0b",
+      "kind": "activity-data",
+      "label": "Gas meter M-118 read, January 2026",
+      "trusted": true,
+      "supersedes": null,
+      "bytes": 65
+    },
+    {
+      "address": "sha256:8898bfa0cdef2c6e2591abad9c68266de63b21a4d984172c0b939220b2d52ba7",
+      "kind": "emission-factor",
+      "label": "UK non-domestic grid factor 2026",
+      "trusted": true,
+      "supersedes": null,
+      "bytes": 74
+    },
+    {
+      "address": "sha256:43f96588fd25e08c2eec79a44d3061be135195b2850bea7b8c5290242df72d01",
+      "kind": "emission-factor",
+      "label": "UK non-domestic grid factor 2026, revision 2",
+      "trusted": true,
+      "supersedes": "sha256:8898bfa0cdef2c6e2591abad9c68266de63b21a4d984172c0b939220b2d52ba7",
+      "bytes": 74
+    },
+    {
+      "address": "sha256:ff1b7990a177a037d512d245a77dafeddb422b9ebfbfcc2ad2f8b289498760dc",
+      "kind": "emission-factor",
+      "label": "UK GHG conversion factor, diesel 2026",
+      "trusted": true,
+      "supersedes": null,
+      "bytes": 88
+    },
+    {
+      "address": "sha256:8ca5b73a9c824f9c69eaabede3256422fe43ce52fcead878efbe073d525294c6",
+      "kind": "activity-data",
+      "label": "Fleet diesel card transactions, January 2026",
+      "trusted": true,
+      "supersedes": null,
+      "bytes": 80
+    },
+    {
+      "address": "sha256:83799c1cdfdb23ad93f43fcdd359472d38016c2d0bec2f9b66e8a1bf83e4c821",
+      "kind": "emission-factor",
+      "label": "DEFRA 2026 average flights factor",
+      "trusted": true,
+      "supersedes": null,
+      "bytes": 81
+    },
+    {
+      "address": "sha256:c6f947cee976d807dd9356913aab830f36f857bc1b1e33a86309f4a6002eafc9",
+      "kind": "method",
+      "label": "Travel supplier consolidated method note",
+      "trusted": false,
+      "supersedes": null,
+      "bytes": 142
+    },
+    {
+      "address": "sha256:b1a3b72dcdac2e3f64f8a5177724e02f0cd74662e44129f0b729636f871c2fe3",
+      "kind": "report",
+      "label": "Supplier consolidated travel return",
+      "trusted": true,
+      "supersedes": null,
+      "bytes": 72
+    },
+    {
+      "address": "sha256:b28149f2dc6bfb3c57fc8fa5e1cbb13960ee7a8f194aa0ddf0e4de79f0813b39",
+      "kind": "emission-factor",
+      "label": "Unverified logistics factor, broker spreadsheet",
+      "trusted": false,
+      "supersedes": null,
+      "bytes": 57
+    },
+    {
+      "address": "sha256:e56c9b13bbb320b332c9de993390492f31ff40ac50e6f1cc536d2a418ddff9c9",
+      "kind": "activity-data",
+      "label": "Lease schedule, building C",
+      "trusted": true,
+      "supersedes": null,
+      "bytes": 65
+    },
+    {
+      "address": "sha256:8fd21d2164fcd2d3d3a9ecb7ea4975572d828617868cdc9aad271cf6acba1b54",
+      "kind": "activity-data",
+      "label": "Meter M-904 reading, building C",
+      "trusted": true,
+      "supersedes": null,
+      "bytes": 65
+    },
+    {
+      "address": "sha256:09e01c2241b0d9e41b639aae0da2e9572cfa42c00da9669b9c7ca429ab40a0d8",
+      "kind": "calibration",
+      "label": "M-904 calibration certificate, UKAS 4471",
+      "trusted": true,
+      "supersedes": null,
+      "bytes": 95
+    },
+    {
+      "address": "sha256:68161cfcbc24aecabcf1fe0848a697b2db7595d44473b0c0243b612b9dfcaa1d",
+      "kind": "method",
+      "label": "ISO 14064-1 quantification method statement",
+      "trusted": true,
+      "supersedes": null,
+      "bytes": 78
+    },
+    {
+      "address": "sha256:9ce5b01e1d7e87d7fcaed0fcc7f529e63a5ea3f30d0fa243c2473a414b9a9263",
+      "kind": "activity-data",
+      "label": "Standby generator diesel delivery, January 2026",
+      "trusted": true,
+      "supersedes": null,
+      "bytes": 51
+    }
+  ],
+  "claims": [
+    {
+      "id": "scope1-stationary-gas",
+      "scope": 1,
+      "category": "stationary-combustion",
+      "period": "2026-Q1",
+      "note": "The arithmetic reproduces exactly, but the factor it cites was replaced by revision 2.",
+      "reportedTonnes": "2.282",
+      "recomputedTonnes": "2.282",
+      "deltaTonnes": "0",
+      "deltaPct": "0",
+      "uncertaintyTonnes": "0.10269",
+      "activityQuantity": "12500",
+      "activityUnit": "kWh",
+      "factorValue": "0.18256",
+      "factorUnit": "kgCO2e/kWh",
+      "factorAddress": "sha256:8898bfa0cdef2c6e2591abad9c68266de63b21a4d984172c0b939220b2d52ba7",
+      "factorRef": "uk-grid-non-domestic-2026",
+      "factorLabel": "UK non-domestic grid factor 2026",
+      "status": "unsupported",
+      "seal": "sha256:9a2a4278f6b3501707f5e120e36cc4590117954a18210ab1145ca8873c0384e4",
+      "reasons": [
+        "FACTOR_DOC_SUPERSEDED: emission factor sha256:8898bfa0cdef2c6e2591abad9c68266de63b21a4d984172c0b939220b2d52ba7 has been replaced by a newer revision",
+        "SUPERSEDED_NODE: 'sha256:8898bfa0cdef2c6e2591abad9c68266de63b21a4d984172c0b939220b2d52ba7' was replaced by a newer revision but is still relied on"
+      ],
+      "supportDepth": 2,
+      "visited": 4,
+      "terminals": [
+        {
+          "id": "sha256:68161cfcbc24aecabcf1fe0848a697b2db7595d44473b0c0243b612b9dfcaa1d",
+          "address": "sha256:68161cfcbc24aecabcf1fe0848a697b2db7595d44473b0c0243b612b9dfcaa1d",
+          "kind": "method"
+        },
+        {
+          "id": "sha256:8898bfa0cdef2c6e2591abad9c68266de63b21a4d984172c0b939220b2d52ba7",
+          "address": "sha256:8898bfa0cdef2c6e2591abad9c68266de63b21a4d984172c0b939220b2d52ba7",
+          "kind": "emission-factor"
+        }
+      ],
+      "spine": [
+        {
+          "id": "scope1-stationary-gas",
+          "address": "sha256:eacf11723db2b57a2d84bc816e6d97bcf13b3eb002f347c7d4d11109b5b45004",
+          "kind": "scope-1",
+          "type": "claim",
+          "trusted": true,
+          "label": null,
+          "relation": "derived-from"
+        },
+        {
+          "id": "sha256:ccc56fe9f9cd1f80477bd5e0001a3c866c0a8a38173671e3945b3b9759a9fd0b",
+          "address": "sha256:ccc56fe9f9cd1f80477bd5e0001a3c866c0a8a38173671e3945b3b9759a9fd0b",
+          "kind": "activity-data",
+          "type": "document",
+          "trusted": true,
+          "label": "Gas meter M-118 read, January 2026",
+          "relation": "derived-from"
+        },
+        {
+          "id": "sha256:68161cfcbc24aecabcf1fe0848a697b2db7595d44473b0c0243b612b9dfcaa1d",
+          "address": "sha256:68161cfcbc24aecabcf1fe0848a697b2db7595d44473b0c0243b612b9dfcaa1d",
+          "kind": "method",
+          "type": "document",
+          "trusted": true,
+          "label": "ISO 14064-1 quantification method statement",
+          "relation": null
+        }
+      ],
+      "allPaths": 2
+    },
+    {
+      "id": "scope1-fleet-diesel",
+      "scope": 1,
+      "category": "mobile-combustion",
+      "period": "2026-Q1",
+      "note": "Reported figure is far above what the card transactions support.",
+      "reportedTonnes": "46.05",
+      "recomputedTonnes": "30.7758",
+      "deltaTonnes": "-15.2742",
+      "deltaPct": "-33.1687",
+      "uncertaintyTonnes": "0.923274",
+      "activityQuantity": "12250",
+      "activityUnit": "litre",
+      "factorValue": "2.51231",
+      "factorUnit": "kgCO2e/litre",
+      "factorAddress": "sha256:ff1b7990a177a037d512d245a77dafeddb422b9ebfbfcc2ad2f8b289498760dc",
+      "factorRef": "diesel-uk-ghg-2026",
+      "factorLabel": "UK GHG conversion factor, diesel 2026",
+      "status": "unsupported",
+      "seal": "sha256:5e3309642068b0061b8139dde736135e3fa4146db90371039d704cdb2d4af8c5",
+      "reasons": [
+        "DELTA_OVER_TOLERANCE: reported 46.05 tCO2e but the evidence gives 30.7758 tCO2e (-33.1687% > 2%)"
+      ],
+      "supportDepth": 1,
+      "visited": 3,
+      "terminals": [
+        {
+          "id": "sha256:8ca5b73a9c824f9c69eaabede3256422fe43ce52fcead878efbe073d525294c6",
+          "address": "sha256:8ca5b73a9c824f9c69eaabede3256422fe43ce52fcead878efbe073d525294c6",
+          "kind": "activity-data"
+        },
+        {
+          "id": "sha256:ff1b7990a177a037d512d245a77dafeddb422b9ebfbfcc2ad2f8b289498760dc",
+          "address": "sha256:ff1b7990a177a037d512d245a77dafeddb422b9ebfbfcc2ad2f8b289498760dc",
+          "kind": "emission-factor"
+        }
+      ],
+      "spine": [
+        {
+          "id": "scope1-fleet-diesel",
+          "address": "sha256:f2286c02c56187fe18e22cef6ac6c9bbc033f595cc46864df25e914ff655c133",
+          "kind": "scope-1",
+          "type": "claim",
+          "trusted": true,
+          "label": null,
+          "relation": "derived-from"
+        },
+        {
+          "id": "sha256:8ca5b73a9c824f9c69eaabede3256422fe43ce52fcead878efbe073d525294c6",
+          "address": "sha256:8ca5b73a9c824f9c69eaabede3256422fe43ce52fcead878efbe073d525294c6",
+          "kind": "activity-data",
+          "type": "document",
+          "trusted": true,
+          "label": "Fleet diesel card transactions, January 2026",
+          "relation": null
+        }
+      ],
+      "allPaths": 2
+    },
+    {
+      "id": "scope2-purchased-electricity",
+      "scope": 2,
+      "category": "purchased-electricity",
+      "period": "2026-Q1",
+      "note": "Still cites the first revision of the grid factor after revision 2 was issued.",
+      "reportedTonnes": "7.7588",
+      "recomputedTonnes": "7.7588",
+      "deltaTonnes": "0",
+      "deltaPct": "0",
+      "uncertaintyTonnes": "0.349146",
+      "activityQuantity": "42500",
+      "activityUnit": "kWh",
+      "factorValue": "0.18256",
+      "factorUnit": "kgCO2e/kWh",
+      "factorAddress": "sha256:8898bfa0cdef2c6e2591abad9c68266de63b21a4d984172c0b939220b2d52ba7",
+      "factorRef": "uk-grid-non-domestic-2026",
+      "factorLabel": "UK non-domestic grid factor 2026",
+      "status": "unsupported",
+      "seal": "sha256:e13c955d9421b6dafdfed0684eff0c15071cdb027f72559cbc52a0a815415ebd",
+      "reasons": [
+        "FACTOR_DOC_SUPERSEDED: emission factor sha256:8898bfa0cdef2c6e2591abad9c68266de63b21a4d984172c0b939220b2d52ba7 has been replaced by a newer revision",
+        "SUPERSEDED_NODE: 'sha256:8898bfa0cdef2c6e2591abad9c68266de63b21a4d984172c0b939220b2d52ba7' was replaced by a newer revision but is still relied on"
+      ],
+      "supportDepth": 1,
+      "visited": 2,
+      "terminals": [
+        {
+          "id": "sha256:8898bfa0cdef2c6e2591abad9c68266de63b21a4d984172c0b939220b2d52ba7",
+          "address": "sha256:8898bfa0cdef2c6e2591abad9c68266de63b21a4d984172c0b939220b2d52ba7",
+          "kind": "emission-factor"
+        }
+      ],
+      "spine": [
+        {
+          "id": "scope2-purchased-electricity",
+          "address": "sha256:82490efe623ef05f4a17fae987711738043a63eb2b5eb7038da80f7b873cf056",
+          "kind": "scope-2",
+          "type": "claim",
+          "trusted": true,
+          "label": null,
+          "relation": "derived-from"
+        },
+        {
+          "id": "sha256:8898bfa0cdef2c6e2591abad9c68266de63b21a4d984172c0b939220b2d52ba7",
+          "address": "sha256:8898bfa0cdef2c6e2591abad9c68266de63b21a4d984172c0b939220b2d52ba7",
+          "kind": "emission-factor",
+          "type": "document",
+          "trusted": true,
+          "label": "UK non-domestic grid factor 2026",
+          "relation": null
+        }
+      ],
+      "allPaths": 1
+    },
+    {
+      "id": "scope3-business-travel-flights",
+      "scope": 3,
+      "category": "business-travel",
+      "period": "2026-Q1",
+      "note": "Allocation method note claims the claim derives from itself.",
+      "reportedTonnes": "27.784",
+      "recomputedTonnes": "27.784",
+      "deltaTonnes": "0",
+      "deltaPct": "0",
+      "uncertaintyTonnes": "2.22272",
+      "activityQuantity": "184000",
+      "activityUnit": "passenger-km",
+      "factorValue": "0.151",
+      "factorUnit": "kgCO2e/passenger-km",
+      "factorAddress": "sha256:83799c1cdfdb23ad93f43fcdd359472d38016c2d0bec2f9b66e8a1bf83e4c821",
+      "factorRef": "flight-dfcf-2026",
+      "factorLabel": "DEFRA 2026 average flights factor",
+      "status": "circular",
+      "seal": "sha256:3daf9f34281143a903c65ee5761f8109d0b21edbad2d4a0142a346aac9e1277a",
+      "reasons": [
+        "UNTRUSTED_NODE: 'sha256:c6f947cee976d807dd9356913aab830f36f857bc1b1e33a86309f4a6002eafc9' is not trusted"
+      ],
+      "supportDepth": 1,
+      "visited": 3,
+      "terminals": [
+        {
+          "id": "sha256:83799c1cdfdb23ad93f43fcdd359472d38016c2d0bec2f9b66e8a1bf83e4c821",
+          "address": "sha256:83799c1cdfdb23ad93f43fcdd359472d38016c2d0bec2f9b66e8a1bf83e4c821",
+          "kind": "emission-factor"
+        }
+      ],
+      "spine": [
+        {
+          "id": "scope3-business-travel-flights",
+          "address": "sha256:755cc065939ef551790867e57025fb32562e790406ff5831410ec2d1e722f751",
+          "kind": "scope-3",
+          "type": "claim",
+          "trusted": true,
+          "label": null,
+          "relation": "derived-from"
+        },
+        {
+          "id": "sha256:83799c1cdfdb23ad93f43fcdd359472d38016c2d0bec2f9b66e8a1bf83e4c821",
+          "address": "sha256:83799c1cdfdb23ad93f43fcdd359472d38016c2d0bec2f9b66e8a1bf83e4c821",
+          "kind": "emission-factor",
+          "type": "document",
+          "trusted": true,
+          "label": "DEFRA 2026 average flights factor",
+          "relation": null
+        }
+      ],
+      "allPaths": 1
+    },
+    {
+      "id": "scope3-logistics-lorry",
+      "scope": 3,
+      "category": "upstream-logistics",
+      "period": "2026-Q1",
+      "note": "Factor comes from an unreviewed broker spreadsheet.",
+      "reportedTonnes": "30.38",
+      "recomputedTonnes": "30.38",
+      "deltaTonnes": "0",
+      "deltaPct": "0",
+      "uncertaintyTonnes": "6.076",
+      "activityQuantity": "310000",
+      "activityUnit": "tonne-km",
+      "factorValue": "0.098",
+      "factorUnit": "kgCO2e/tonne-km",
+      "factorAddress": "sha256:b28149f2dc6bfb3c57fc8fa5e1cbb13960ee7a8f194aa0ddf0e4de79f0813b39",
+      "factorRef": "lorry-hgv-average-2026",
+      "factorLabel": "Unverified logistics factor, broker spreadsheet",
+      "status": "unsupported",
+      "seal": "sha256:19be5c788c1e277af623e5ab51191116addc0131101cdde63c9c468974e0eb8d",
+      "reasons": [
+        "FACTOR_DOC_UNTRUSTED: emission factor sha256:b28149f2dc6bfb3c57fc8fa5e1cbb13960ee7a8f194aa0ddf0e4de79f0813b39 comes from an unaccepted source",
+        "UNTRUSTED_NODE: 'sha256:b28149f2dc6bfb3c57fc8fa5e1cbb13960ee7a8f194aa0ddf0e4de79f0813b39' is not trusted"
+      ],
+      "supportDepth": 1,
+      "visited": 2,
+      "terminals": [
+        {
+          "id": "sha256:b28149f2dc6bfb3c57fc8fa5e1cbb13960ee7a8f194aa0ddf0e4de79f0813b39",
+          "address": "sha256:b28149f2dc6bfb3c57fc8fa5e1cbb13960ee7a8f194aa0ddf0e4de79f0813b39",
+          "kind": "emission-factor"
+        }
+      ],
+      "spine": [
+        {
+          "id": "scope3-logistics-lorry",
+          "address": "sha256:4344bac069129b698464ab3bfad2662d9944b06a38158e8ba8dee05fef9b82f7",
+          "kind": "scope-3",
+          "type": "claim",
+          "trusted": true,
+          "label": null,
+          "relation": "derived-from"
+        },
+        {
+          "id": "sha256:b28149f2dc6bfb3c57fc8fa5e1cbb13960ee7a8f194aa0ddf0e4de79f0813b39",
+          "address": "sha256:b28149f2dc6bfb3c57fc8fa5e1cbb13960ee7a8f194aa0ddf0e4de79f0813b39",
+          "kind": "emission-factor",
+          "type": "document",
+          "trusted": false,
+          "label": "Unverified logistics factor, broker spreadsheet",
+          "relation": null
+        }
+      ],
+      "allPaths": 1
+    },
+    {
+      "id": "scope2-tenant-electricity",
+      "scope": 2,
+      "category": "tenant-electricity",
+      "period": "2026-Q1",
+      "note": "Quantity is stated in MWh while the factor is per kWh.",
+      "reportedTonnes": "7.7588",
+      "recomputedTonnes": "0.0077588",
+      "deltaTonnes": "-7.7510412",
+      "deltaPct": "-99.9",
+      "uncertaintyTonnes": "0.000349146",
+      "activityQuantity": "42.5",
+      "activityUnit": "MWh",
+      "factorValue": "0.18256",
+      "factorUnit": "kgCO2e/kWh",
+      "factorAddress": "sha256:8898bfa0cdef2c6e2591abad9c68266de63b21a4d984172c0b939220b2d52ba7",
+      "factorRef": "uk-grid-non-domestic-2026",
+      "factorLabel": "UK non-domestic grid factor 2026",
+      "status": "unsupported",
+      "seal": "sha256:819ac45a3eb9b55326749bc7b6f756203999ae42b7ecfa3f6aaa505ee04f7bc4",
+      "reasons": [
+        "DELTA_OVER_TOLERANCE: reported 7.7588 tCO2e but the evidence gives 0.0077588 tCO2e (-99.9% > 2%)",
+        "FACTOR_DOC_SUPERSEDED: emission factor sha256:8898bfa0cdef2c6e2591abad9c68266de63b21a4d984172c0b939220b2d52ba7 has been replaced by a newer revision",
+        "UNIT_MISMATCH: factor is per 'kWh' but the claim is measured in 'MWh'"
+      ],
+      "supportDepth": 4,
+      "visited": 5,
+      "terminals": [
+        {
+          "id": "sha256:68161cfcbc24aecabcf1fe0848a697b2db7595d44473b0c0243b612b9dfcaa1d",
+          "address": "sha256:68161cfcbc24aecabcf1fe0848a697b2db7595d44473b0c0243b612b9dfcaa1d",
+          "kind": "method"
+        }
+      ],
+      "spine": [
+        {
+          "id": "scope2-tenant-electricity",
+          "address": "sha256:099da9925568306e46fbbe87a13da719fbbc4160dd504bfc447b8cefbb9f6c29",
+          "kind": "scope-2",
+          "type": "claim",
+          "trusted": true,
+          "label": null,
+          "relation": "derived-from"
+        },
+        {
+          "id": "sha256:e56c9b13bbb320b332c9de993390492f31ff40ac50e6f1cc536d2a418ddff9c9",
+          "address": "sha256:e56c9b13bbb320b332c9de993390492f31ff40ac50e6f1cc536d2a418ddff9c9",
+          "kind": "activity-data",
+          "type": "document",
+          "trusted": true,
+          "label": "Lease schedule, building C",
+          "relation": "measured-by"
+        },
+        {
+          "id": "sha256:8fd21d2164fcd2d3d3a9ecb7ea4975572d828617868cdc9aad271cf6acba1b54",
+          "address": "sha256:8fd21d2164fcd2d3d3a9ecb7ea4975572d828617868cdc9aad271cf6acba1b54",
+          "kind": "activity-data",
+          "type": "document",
+          "trusted": true,
+          "label": "Meter M-904 reading, building C",
+          "relation": "calibrated-by"
+        },
+        {
+          "id": "sha256:09e01c2241b0d9e41b639aae0da2e9572cfa42c00da9669b9c7ca429ab40a0d8",
+          "address": "sha256:09e01c2241b0d9e41b639aae0da2e9572cfa42c00da9669b9c7ca429ab40a0d8",
+          "kind": "calibration",
+          "type": "document",
+          "trusted": true,
+          "label": "M-904 calibration certificate, UKAS 4471",
+          "relation": "derived-from"
+        },
+        {
+          "id": "sha256:68161cfcbc24aecabcf1fe0848a697b2db7595d44473b0c0243b612b9dfcaa1d",
+          "address": "sha256:68161cfcbc24aecabcf1fe0848a697b2db7595d44473b0c0243b612b9dfcaa1d",
+          "kind": "method",
+          "type": "document",
+          "trusted": true,
+          "label": "ISO 14064-1 quantification method statement",
+          "relation": null
+        }
+      ],
+      "allPaths": 1
+    },
+    {
+      "id": "scope2-purchased-electricity-verified",
+      "scope": 2,
+      "category": "purchased-electricity",
+      "period": "2026-Q1",
+      "note": "Re-based onto revision 2, with the meter reading and its calibration behind it.",
+      "reportedTonnes": "7.524625",
+      "recomputedTonnes": "7.52462",
+      "deltaTonnes": "-0.000005",
+      "deltaPct": "-0.0000664485",
+      "uncertaintyTonnes": "0.338608",
+      "activityQuantity": "42500",
+      "activityUnit": "kWh",
+      "factorValue": "0.17705",
+      "factorUnit": "kgCO2e/kWh",
+      "factorAddress": "sha256:43f96588fd25e08c2eec79a44d3061be135195b2850bea7b8c5290242df72d01",
+      "factorRef": "uk-grid-non-domestic-2026-r2",
+      "factorLabel": "UK non-domestic grid factor 2026, revision 2",
+      "status": "supported",
+      "seal": "sha256:2506c751c15ec3de0a981841bb2785aa3c291544b0678afb8441fc11929614ba",
+      "reasons": [],
+      "supportDepth": 3,
+      "visited": 5,
+      "terminals": [
+        {
+          "id": "sha256:43f96588fd25e08c2eec79a44d3061be135195b2850bea7b8c5290242df72d01",
+          "address": "sha256:43f96588fd25e08c2eec79a44d3061be135195b2850bea7b8c5290242df72d01",
+          "kind": "emission-factor"
+        },
+        {
+          "id": "sha256:68161cfcbc24aecabcf1fe0848a697b2db7595d44473b0c0243b612b9dfcaa1d",
+          "address": "sha256:68161cfcbc24aecabcf1fe0848a697b2db7595d44473b0c0243b612b9dfcaa1d",
+          "kind": "method"
+        }
+      ],
+      "spine": [
+        {
+          "id": "scope2-purchased-electricity-verified",
+          "address": "sha256:34c2d0e56afd864237bdbbff032ffee64ce90cb634e64bbfc8edf011a00ca69c",
+          "kind": "scope-2",
+          "type": "claim",
+          "trusted": true,
+          "label": null,
+          "relation": "derived-from"
+        },
+        {
+          "id": "sha256:43f96588fd25e08c2eec79a44d3061be135195b2850bea7b8c5290242df72d01",
+          "address": "sha256:43f96588fd25e08c2eec79a44d3061be135195b2850bea7b8c5290242df72d01",
+          "kind": "emission-factor",
+          "type": "document",
+          "trusted": true,
+          "label": "UK non-domestic grid factor 2026, revision 2",
+          "relation": null
+        }
+      ],
+      "allPaths": 2
+    },
+    {
+      "id": "scope1-standby-generator",
+      "scope": 1,
+      "category": "mobile-combustion",
+      "period": "2026-Q1",
+      "note": "Delivery ticket, published factor, method statement: nothing amiss.",
+      "reportedTonnes": "2.261079",
+      "recomputedTonnes": "2.26108",
+      "deltaTonnes": "0.000001",
+      "deltaPct": "0.0000442267",
+      "uncertaintyTonnes": "0.0678324",
+      "activityQuantity": "900",
+      "activityUnit": "litre",
+      "factorValue": "2.51231",
+      "factorUnit": "kgCO2e/litre",
+      "factorAddress": "sha256:ff1b7990a177a037d512d245a77dafeddb422b9ebfbfcc2ad2f8b289498760dc",
+      "factorRef": "diesel-uk-ghg-2026",
+      "factorLabel": "UK GHG conversion factor, diesel 2026",
+      "status": "supported",
+      "seal": "sha256:87b6965e54308554dcd3132f3cd71401742e961bd53fdcbf9906339b94707fed",
+      "reasons": [],
+      "supportDepth": 2,
+      "visited": 4,
+      "terminals": [
+        {
+          "id": "sha256:68161cfcbc24aecabcf1fe0848a697b2db7595d44473b0c0243b612b9dfcaa1d",
+          "address": "sha256:68161cfcbc24aecabcf1fe0848a697b2db7595d44473b0c0243b612b9dfcaa1d",
+          "kind": "method"
+        },
+        {
+          "id": "sha256:ff1b7990a177a037d512d245a77dafeddb422b9ebfbfcc2ad2f8b289498760dc",
+          "address": "sha256:ff1b7990a177a037d512d245a77dafeddb422b9ebfbfcc2ad2f8b289498760dc",
+          "kind": "emission-factor"
+        }
+      ],
+      "spine": [
+        {
+          "id": "scope1-standby-generator",
+          "address": "sha256:5cc95aaa34a9c6bb20a5c87a5b9222d369b804302a3d0d3b36cf985e2aef1f1d",
+          "kind": "scope-1",
+          "type": "claim",
+          "trusted": true,
+          "label": null,
+          "relation": "derived-from"
+        },
+        {
+          "id": "sha256:9ce5b01e1d7e87d7fcaed0fcc7f529e63a5ea3f30d0fa243c2473a414b9a9263",
+          "address": "sha256:9ce5b01e1d7e87d7fcaed0fcc7f529e63a5ea3f30d0fa243c2473a414b9a9263",
+          "kind": "activity-data",
+          "type": "document",
+          "trusted": true,
+          "label": "Standby generator diesel delivery, January 2026",
+          "relation": "derived-from"
+        },
+        {
+          "id": "sha256:68161cfcbc24aecabcf1fe0848a697b2db7595d44473b0c0243b612b9dfcaa1d",
+          "address": "sha256:68161cfcbc24aecabcf1fe0848a697b2db7595d44473b0c0243b612b9dfcaa1d",
+          "kind": "method",
+          "type": "document",
+          "trusted": true,
+          "label": "ISO 14064-1 quantification method statement",
+          "relation": null
+        }
+      ],
+      "allPaths": 2
+    }
+  ]
+}

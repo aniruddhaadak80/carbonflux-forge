@@ -1,0 +1,624 @@
+/*
+ * The notebook: claims as cells, verdicts as stamps, provenance as a core sample.
+ *
+ * Mono, single accent, sharp corners, generous spacing. Every colour below is a token
+ * reference — check:theme-tokens fails the build on a raw literal outside tokens.css.
+ */
+
+/* ---------------------------------------------------------------- head */
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fg-subtle);
+  margin: 0 0 var(--space-3);
+}
+
+.notebook-head {
+  padding: var(--space-7) 0 var(--space-6);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: var(--space-6);
+}
+
+.notebook-head h1 {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xl);
+  letter-spacing: -0.02em;
+  margin: 0 0 var(--space-3);
+}
+
+.lede {
+  max-width: 62ch;
+  color: var(--fg-muted);
+  margin: 0 0 var(--space-6);
+  font-size: var(--text-lg);
+}
+
+.census {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin: 0 0 var(--space-5);
+}
+
+.census-cell {
+  background: var(--bg);
+  padding: var(--space-4);
+}
+
+.census-cell dt {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.census-count {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xl);
+  line-height: 1;
+}
+
+.census-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--fg-subtle);
+}
+
+.census-cell dd {
+  margin: var(--space-2) 0 0;
+  font-size: var(--text-sm);
+  color: var(--fg-muted);
+}
+
+.census-cell[data-status='supported'] .census-count {
+  color: var(--ok);
+}
+.census-cell[data-status='unsupported'] .census-count {
+  color: var(--danger);
+}
+.census-cell[data-status='circular'] .census-count {
+  color: var(--warn);
+}
+.census-cell[data-status='unverified'] .census-count {
+  color: var(--fg-subtle);
+}
+
+.totals {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--fg-muted);
+  margin: 0;
+}
+
+.section-heading {
+  font-family: var(--font-mono);
+  font-size: var(--text-xl);
+  letter-spacing: -0.01em;
+  margin: 0 0 var(--space-2);
+}
+
+.section-note {
+  max-width: 68ch;
+  color: var(--fg-muted);
+  margin: 0 0 var(--space-5);
+}
+
+/* ---------------------------------------------------------------- cells */
+
+.cells {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--border);
+}
+
+.cell {
+  display: grid;
+  grid-template-columns: 8.5rem 1fr;
+  gap: var(--space-4);
+  padding: var(--space-5) 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.cell-gutter {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--fg-subtle);
+}
+
+.cell-main {
+  min-width: 0;
+}
+
+.cell-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.cell-id {
+  font-family: var(--font-mono);
+  font-size: var(--text-lg);
+  color: var(--fg);
+}
+
+.cell-id:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.cell-category {
+  margin: var(--space-1) 0 var(--space-4);
+  color: var(--fg-subtle);
+  font-size: var(--text-sm);
+}
+
+/* A verdict is stamped, not tinted: boxed, mono, uppercase. */
+.stamp {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.15rem 0.5rem;
+  border: 1px solid var(--border-strong);
+  color: var(--fg-muted);
+  white-space: nowrap;
+}
+
+.stamp-large {
+  font-size: var(--text-sm);
+  padding: 0.3rem 0.7rem;
+}
+
+.stamp[data-status='supported'] {
+  color: var(--ok);
+  border-color: var(--ok);
+}
+.stamp[data-status='unsupported'] {
+  color: var(--danger);
+  border-color: var(--danger);
+}
+.stamp[data-status='circular'] {
+  color: var(--warn);
+  border-color: var(--warn);
+}
+.stamp[data-status='unverified'] {
+  color: var(--fg-subtle);
+  border-style: dashed;
+}
+
+.figures {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--space-4);
+  margin: 0 0 var(--space-4);
+}
+
+.figures dt {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--fg-subtle);
+}
+
+.figures dd {
+  margin: var(--space-1) 0 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-md);
+  overflow-wrap: anywhere;
+}
+
+.figures dd[data-sign='moved'] {
+  color: var(--danger);
+}
+.figures dd[data-sign='flat'] {
+  color: var(--fg-muted);
+}
+
+.cell-foot {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--fg-subtle);
+}
+
+.cell-seal {
+  margin-left: auto;
+}
+
+.reasons {
+  list-style: none;
+  margin: var(--space-4) 0 0;
+  padding: 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--danger);
+}
+
+.reasons li {
+  padding-left: var(--space-4);
+  border-left: 2px solid var(--danger);
+  margin-bottom: var(--space-2);
+  overflow-wrap: anywhere;
+}
+
+.reasons-large {
+  font-size: var(--text-md);
+  color: var(--fg);
+}
+
+.reasons-large li {
+  color: var(--fg);
+  border-left-color: var(--border-strong);
+}
+
+/* ---------------------------------------------------------------- the core sample
+   The signature element. A claim's support chain is a depth, not a tree, in the
+   reader's mind — so it is drawn as one: a fixed-pitch rail, a tick at every depth,
+   and every node stamped with the SHA-256 of its own bytes. */
+
+.spine-figure {
+  margin: 0;
+}
+
+.spine {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.spine-row {
+  display: grid;
+  grid-template-columns: 2.5rem 1fr;
+  column-gap: var(--space-3);
+}
+
+.spine-rail {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.spine-rail::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--border-strong);
+}
+
+.spine-tick {
+  position: relative;
+  display: block;
+  width: 1.25rem;
+  height: 1px;
+  margin-top: 1.15rem;
+  background: var(--fg-subtle);
+}
+
+.spine-row:first-child .spine-rail::before {
+  top: 1.15rem;
+}
+
+.spine-row:last-child .spine-rail::before {
+  bottom: auto;
+  height: 1.15rem;
+}
+
+.spine-row[data-trusted='false'] .spine-tick {
+  background: var(--danger);
+  width: 1.75rem;
+}
+
+.spine-body {
+  padding-bottom: var(--space-5);
+  min-width: 0;
+}
+
+.spine-line {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.spine-kind {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.spine-type {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--fg-subtle);
+  border: 1px solid var(--border);
+  padding: 0 0.35rem;
+}
+
+.spine-flag {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--danger);
+}
+
+.spine-label {
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-sm);
+  color: var(--fg-muted);
+}
+
+.spine-addr {
+  margin: var(--space-2) 0 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--fg-subtle);
+  overflow-wrap: anywhere;
+}
+
+.spine-addr-prefix {
+  color: var(--border-strong);
+}
+
+.spine-relation {
+  margin: var(--space-3) 0 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--accent);
+  letter-spacing: 0.04em;
+}
+
+.spine-caption {
+  margin-top: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--fg-subtle);
+}
+
+/* The compressed chain inside a list row: a depth gauge, not a drawing. */
+.spine-mini {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.spine-mini-node {
+  display: inline-flex;
+  align-items: flex-end;
+}
+
+.spine-mini-bar {
+  display: block;
+  width: 3px;
+  background: var(--fg-subtle);
+}
+
+.spine-mini-node:nth-child(1) .spine-mini-bar {
+  height: 6px;
+}
+.spine-mini-node:nth-child(2) .spine-mini-bar {
+  height: 10px;
+}
+.spine-mini-node:nth-child(3) .spine-mini-bar {
+  height: 14px;
+}
+.spine-mini-node:nth-child(4) .spine-mini-bar {
+  height: 18px;
+}
+.spine-mini-node:nth-child(5) .spine-mini-bar {
+  height: 22px;
+}
+.spine-mini-node:nth-child(n + 6) .spine-mini-bar {
+  height: 26px;
+}
+.spine-mini-node[data-trusted='false'] .spine-mini-bar {
+  background: var(--danger);
+}
+
+/* ---------------------------------------------------------------- claim detail */
+
+.crumbs {
+  display: flex;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--fg-subtle);
+  padding: var(--space-5) 0 0;
+}
+
+.claim-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  padding: var(--space-4) 0 var(--space-5);
+  border-bottom: 1px solid var(--border);
+}
+
+.claim-head h1 {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xl);
+  letter-spacing: -0.02em;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.claim-note {
+  max-width: 68ch;
+  color: var(--fg-muted);
+  margin: var(--space-5) 0 0;
+  font-size: var(--text-lg);
+}
+
+.panel {
+  margin: var(--space-6) 0;
+  padding: var(--space-5);
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+}
+
+.panel h2 {
+  font-family: var(--font-mono);
+  font-size: var(--text-lg);
+  margin: 0 0 var(--space-2);
+}
+
+.panel-note {
+  max-width: 68ch;
+  color: var(--fg-muted);
+  font-size: var(--text-sm);
+  margin: 0 0 var(--space-4);
+}
+
+.ledger {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+}
+
+.ledger th,
+.ledger td {
+  text-align: left;
+  padding: var(--space-2) var(--space-3) var(--space-2) 0;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.ledger th {
+  font-weight: 400;
+  color: var(--fg-subtle);
+  white-space: nowrap;
+}
+
+.ledger td {
+  overflow-wrap: anywhere;
+}
+
+.ledger-total td {
+  font-size: var(--text-md);
+}
+
+.ledger-flat td {
+  color: var(--fg-muted);
+}
+
+.ledger-moved td {
+  color: var(--danger);
+}
+
+.mono-dim {
+  color: var(--fg-subtle);
+}
+
+.mono-cell {
+  font-family: var(--font-mono);
+  color: var(--fg-muted);
+}
+
+.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.table-scroll {
+  overflow-x: auto;
+}
+
+.ledger-wide {
+  min-width: 40rem;
+}
+
+.callout {
+  margin-top: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border-left: 3px solid var(--warn);
+  background: var(--warn-subtle);
+  font-size: var(--text-sm);
+}
+
+.callout[data-tone='danger'] {
+  border-left-color: var(--danger);
+  background: var(--danger-subtle);
+}
+
+.callout ul {
+  margin: var(--space-2) 0 0;
+  padding-left: var(--space-5);
+}
+
+.seal-full {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--fg-muted);
+  background: var(--bg-sunken);
+  border: 1px solid var(--border);
+  padding: var(--space-3);
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.tag {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border: 1px solid currentColor;
+  padding: 0 0.35rem;
+  margin-right: var(--space-2);
+  white-space: nowrap;
+}
+
+.tag[data-tone='ok'] {
+  color: var(--ok);
+}
+.tag[data-tone='warn'] {
+  color: var(--warn);
+}
+.tag[data-tone='danger'] {
+  color: var(--danger);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 48rem) {
+  .cell {
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+  }
+  .cell-gutter {
+    flex-direction: row;
+    gap: var(--space-3);
+  }
+  .cell-seal {
+    margin-left: 0;
+  }
+}

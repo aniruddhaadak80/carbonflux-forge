@@ -1,0 +1,11 @@
+{
+  "name": "ghg-protocol-defects",
+  "version": "0.1.0",
+  "description": "Adds the GHG Protocol scope and category vocabulary, so a malformed claim is reported against the standard's terms rather than a free-text label.",
+  "enabled": true,
+  "priority": 60,
+  "capabilities": ["ghg.scopeVocabulary", "ghg.categoryVocabulary"],
+  "engines": {
+    "@carbonfluxforge": "0.1.0"
+  }
+}

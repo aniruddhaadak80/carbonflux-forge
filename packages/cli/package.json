@@ -1,0 +1,37 @@
+{
+  "name": "@carbonfluxforge/cli",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "bin": {
+    "carbonflux-forge": "./dist/bin.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\""
+  },
+  "dependencies": {
+    "commander": "^14.0.0",
+    "@carbonfluxforge/core": "0.1.0",
+    "@carbonfluxforge/skills": "0.1.0",
+    "@carbonfluxforge/plugins": "0.1.0",
+    "@carbonfluxforge/engine-client": "0.1.0",
+    "@carbonfluxforge/mcp": "0.1.0",
+    "@carbonfluxforge/memory": "0.1.0",
+    "@carbonfluxforge/channels": "0.1.0"
+  }
+}

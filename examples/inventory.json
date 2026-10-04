@@ -1,0 +1,261 @@
+{
+  "$comment": "The example inventory shipped with CarbonFlux Forge. Addresses are not stored here: they are the SHA-256 of each document's `content`, computed on load. That way the dataset is self-verifying — if a byte of evidence changes, its address changes, and every claim citing it is re-examined.",
+  "period": "2026-Q1",
+  "documents": [
+    {
+      "ref": "gas-meter-january",
+      "kind": "activity-data",
+      "label": "Gas meter M-118 read, January 2026",
+      "trusted": true,
+      "content": "meter,meter_id,read_kwh,read_date\nM-118,1180042,12500,2026-01-31\n"
+    },
+    {
+      "ref": "uk-grid-non-domestic-2026",
+      "kind": "emission-factor",
+      "label": "UK non-domestic grid factor 2026",
+      "trusted": true,
+      "content": "source,year,unit,factor,uncertainty_pct\nDESNZ,2026,kgCO2e/kWh,0.18256,4.5\n"
+    },
+    {
+      "ref": "uk-grid-non-domestic-2026-r2",
+      "kind": "emission-factor",
+      "label": "UK non-domestic grid factor 2026, revision 2",
+      "trusted": true,
+      "supersedes": "uk-grid-non-domestic-2026",
+      "content": "source,year,unit,factor,uncertainty_pct\nDESNZ,2026,kgCO2e/kWh,0.17705,4.5\n"
+    },
+    {
+      "ref": "diesel-uk-ghg-2026",
+      "kind": "emission-factor",
+      "label": "UK GHG conversion factor, diesel 2026",
+      "trusted": true,
+      "content": "source,year,fuel,unit,factor,uncertainty_pct\nDEFRA,2026,diesel,kgCO2e/litre,2.51231,3.0\n"
+    },
+    {
+      "ref": "fleet-diesel-january",
+      "kind": "activity-data",
+      "label": "Fleet diesel card transactions, January 2026",
+      "trusted": true,
+      "content": "card,litres,date\nF-01,4180,2026-01-14\nF-02,2960,2026-01-22\nF-03,5110,2026-01-29\n"
+    },
+    {
+      "ref": "flight-dfcf-2026",
+      "kind": "emission-factor",
+      "label": "DEFRA 2026 average flights factor",
+      "trusted": true,
+      "content": "source,year,unit,factor,uncertainty_pct\nDEFRA,2026,kgCO2e/passenger-km,0.151,8.0\n"
+    },
+    {
+      "ref": "travel-supplier-consolidated",
+      "kind": "method",
+      "label": "Travel supplier consolidated method note",
+      "trusted": false,
+      "content": "method: allocate 100% of supplier-reported travel to the reporting entity.\nnote: allocation basis is the supplier's own estimate, unreviewed.\n"
+    },
+    {
+      "ref": "supplier-consolidated-return",
+      "kind": "report",
+      "label": "Supplier consolidated travel return",
+      "trusted": true,
+      "content": "supplier,year,passenger_km,allocated_pct\nVoyager Travel,2026,184000,100\n"
+    },
+    {
+      "ref": "lorry-hgv-average-2026",
+      "kind": "emission-factor",
+      "label": "Unverified logistics factor, broker spreadsheet",
+      "trusted": false,
+      "content": "source,unit,factor\nbroker-sheet-v3,kgCO2e/tonne-km,0.098\n"
+    },
+    {
+      "ref": "lease-schedule-building-c",
+      "kind": "activity-data",
+      "label": "Lease schedule, building C",
+      "trusted": true,
+      "content": "unit,period,mwh,measured_by\nBuilding C tenant,2026-Q1,42.5,M-904\n"
+    },
+    {
+      "ref": "meter-m904-reading",
+      "kind": "activity-data",
+      "label": "Meter M-904 reading, building C",
+      "trusted": true,
+      "content": "meter,meter_id,read_kwh,read_date\nM-904,1189910,42500,2026-03-31\n"
+    },
+    {
+      "ref": "calibration-m904-2025",
+      "kind": "calibration",
+      "label": "M-904 calibration certificate, UKAS 4471",
+      "trusted": true,
+      "content": "certificate,instrument,lab,calibrated_on,valid_until\nUKAS-4471,M-904,NPL,2025-11-14,2026-11-14\n"
+    },
+    {
+      "ref": "iso-14064-method",
+      "kind": "method",
+      "label": "ISO 14064-1 quantification method statement",
+      "trusted": true,
+      "content": "standard,clause,topic\nISO 14064-1:2018,5.2,Activity data and emission factors\n"
+    },
+    {
+      "ref": "generator-diesel-january",
+      "kind": "activity-data",
+      "label": "Standby generator diesel delivery, January 2026",
+      "trusted": true,
+      "content": "delivery_ticket,litres,date\nGT-7714,900,2026-01-19\n"
+    }
+  ],
+  "claims": [
+    {
+      "id": "scope1-stationary-gas",
+      "scope": 1,
+      "category": "stationary-combustion",
+      "activityQuantity": "12500",
+      "activityUnit": "kWh",
+      "factorValue": "0.18256",
+      "factorUnit": "kgCO2e/kWh",
+      "factorRef": "uk-grid-non-domestic-2026",
+      "factorUncertaintyPct": "4.5",
+      "reportedTonnes": "2.282",
+      "note": "The arithmetic reproduces exactly, but the factor it cites was replaced by revision 2."
+    },
+    {
+      "id": "scope1-fleet-diesel",
+      "scope": 1,
+      "category": "mobile-combustion",
+      "activityQuantity": "12250",
+      "activityUnit": "litre",
+      "factorValue": "2.51231",
+      "factorUnit": "kgCO2e/litre",
+      "factorRef": "diesel-uk-ghg-2026",
+      "factorUncertaintyPct": "3",
+      "reportedTonnes": "46.05",
+      "note": "Reported figure is far above what the card transactions support."
+    },
+    {
+      "id": "scope2-purchased-electricity",
+      "scope": 2,
+      "category": "purchased-electricity",
+      "activityQuantity": "42500",
+      "activityUnit": "kWh",
+      "factorValue": "0.18256",
+      "factorUnit": "kgCO2e/kWh",
+      "factorRef": "uk-grid-non-domestic-2026",
+      "factorUncertaintyPct": "4.5",
+      "reportedTonnes": "7.7588",
+      "note": "Still cites the first revision of the grid factor after revision 2 was issued."
+    },
+    {
+      "id": "scope3-business-travel-flights",
+      "scope": 3,
+      "category": "business-travel",
+      "activityQuantity": "184000",
+      "activityUnit": "passenger-km",
+      "factorValue": "0.151",
+      "factorUnit": "kgCO2e/passenger-km",
+      "factorRef": "flight-dfcf-2026",
+      "factorUncertaintyPct": "8",
+      "reportedTonnes": "27.784",
+      "note": "Allocation method note claims the claim derives from itself."
+    },
+    {
+      "id": "scope3-logistics-lorry",
+      "scope": 3,
+      "category": "upstream-logistics",
+      "activityQuantity": "310000",
+      "activityUnit": "tonne-km",
+      "factorValue": "0.098",
+      "factorUnit": "kgCO2e/tonne-km",
+      "factorRef": "lorry-hgv-average-2026",
+      "factorUncertaintyPct": "20",
+      "reportedTonnes": "30.38",
+      "note": "Factor comes from an unreviewed broker spreadsheet."
+    },
+    {
+      "id": "scope2-tenant-electricity",
+      "scope": 2,
+      "category": "tenant-electricity",
+      "activityQuantity": "42.5",
+      "activityUnit": "MWh",
+      "factorValue": "0.18256",
+      "factorUnit": "kgCO2e/kWh",
+      "factorRef": "uk-grid-non-domestic-2026",
+      "factorUncertaintyPct": "4.5",
+      "reportedTonnes": "7.7588",
+      "note": "Quantity is stated in MWh while the factor is per kWh."
+    },
+    {
+      "id": "scope2-purchased-electricity-verified",
+      "scope": 2,
+      "category": "purchased-electricity",
+      "activityQuantity": "42500",
+      "activityUnit": "kWh",
+      "factorValue": "0.17705",
+      "factorUnit": "kgCO2e/kWh",
+      "factorRef": "uk-grid-non-domestic-2026-r2",
+      "factorUncertaintyPct": "4.5",
+      "reportedTonnes": "7.524625",
+      "note": "Re-based onto revision 2, with the meter reading and its calibration behind it."
+    },
+    {
+      "id": "scope1-standby-generator",
+      "scope": 1,
+      "category": "mobile-combustion",
+      "activityQuantity": "900",
+      "activityUnit": "litre",
+      "factorValue": "2.51231",
+      "factorUnit": "kgCO2e/litre",
+      "factorRef": "diesel-uk-ghg-2026",
+      "factorUncertaintyPct": "3",
+      "reportedTonnes": "2.261079",
+      "note": "Delivery ticket, published factor, method statement: nothing amiss."
+    }
+  ],
+  "edges": [
+    { "from": "scope1-stationary-gas", "to": "gas-meter-january", "relation": "derived-from" },
+    { "from": "gas-meter-january", "to": "iso-14064-method", "relation": "derived-from" },
+    { "from": "scope1-stationary-gas", "to": "uk-grid-non-domestic-2026", "relation": "derived-from" },
+
+    { "from": "scope1-fleet-diesel", "to": "fleet-diesel-january", "relation": "derived-from" },
+    { "from": "scope1-fleet-diesel", "to": "diesel-uk-ghg-2026", "relation": "derived-from" },
+
+    { "from": "scope2-purchased-electricity", "to": "uk-grid-non-domestic-2026", "relation": "derived-from" },
+    { "from": "uk-grid-non-domestic-2026-r2", "to": "uk-grid-non-domestic-2026", "relation": "supersedes" },
+
+    { "from": "scope3-business-travel-flights", "to": "flight-dfcf-2026", "relation": "derived-from" },
+    {
+      "from": "scope3-business-travel-flights",
+      "to": "travel-supplier-consolidated",
+      "relation": "derived-from"
+    },
+    {
+      "from": "travel-supplier-consolidated",
+      "to": "scope3-business-travel-flights",
+      "relation": "derived-from"
+    },
+    {
+      "from": "travel-supplier-consolidated",
+      "to": "supplier-consolidated-return",
+      "relation": "derived-from"
+    },
+
+    { "from": "scope3-logistics-lorry", "to": "lorry-hgv-average-2026", "relation": "derived-from" },
+
+    { "from": "scope2-tenant-electricity", "to": "lease-schedule-building-c", "relation": "derived-from" },
+    { "from": "lease-schedule-building-c", "to": "meter-m904-reading", "relation": "measured-by" },
+
+    {
+      "from": "scope2-purchased-electricity-verified",
+      "to": "meter-m904-reading",
+      "relation": "derived-from"
+    },
+    {
+      "from": "scope2-purchased-electricity-verified",
+      "to": "uk-grid-non-domestic-2026-r2",
+      "relation": "derived-from"
+    },
+    { "from": "meter-m904-reading", "to": "calibration-m904-2025", "relation": "calibrated-by" },
+    { "from": "calibration-m904-2025", "to": "iso-14064-method", "relation": "derived-from" },
+
+    { "from": "scope1-standby-generator", "to": "generator-diesel-january", "relation": "derived-from" },
+    { "from": "scope1-standby-generator", "to": "diesel-uk-ghg-2026", "relation": "derived-from" },
+    { "from": "generator-diesel-january", "to": "iso-14064-method", "relation": "derived-from" }
+  ]
+}

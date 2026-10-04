@@ -1,0 +1,107 @@
+/*
+ * THE SINGLE SOURCE OF COLOUR TRUTH.
+ *
+ * check:theme-tokens fails the build if a raw hex/rgb/hsl literal appears in any other
+ * file under apps/web. If you need a new colour, add it here — nowhere else. This is what
+ * stops a codebase drifting into forty slightly different greys.
+ */
+
+:root {
+  /* surfaces */
+  --bg: #ffffff;
+  --bg-elevated: #fafafa;
+  --bg-sunken: #f4f4f5;
+
+  /* content */
+  --fg: #18181b;
+  --fg-muted: #52525b;
+  --fg-subtle: #71717a;
+
+  /* lines */
+  --border: #e4e4e7;
+  --border-strong: #d4d4d8;
+
+  /* accent */
+  --accent: #4f46e5;
+  --accent-hover: #4338ca;
+  --accent-fg: #ffffff;
+  --accent-subtle: #eef2ff;
+
+  /* status */
+  --ok: #15803d;
+  --ok-subtle: #f0fdf4;
+  --warn: #b45309;
+  --warn-subtle: #fffbeb;
+  --danger: #b91c1c;
+  --danger-subtle: #fef2f2;
+  --info: #1d4ed8;
+  --info-subtle: #eff6ff;
+
+  /* spacing scale */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+
+  /* radii */
+  --radius-1: 4px;
+  --radius-2: 6px;
+  --radius-3: 10px;
+  --radius-4: 16px;
+
+  /* elevation */
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-2: 0 2px 8px rgba(0, 0, 0, 0.07);
+  --shadow-3: 0 8px 24px rgba(0, 0, 0, 0.1);
+
+  /* type */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: 2.25rem;
+
+  /* motion */
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --ease: cubic-bezier(0.2, 0, 0.2, 1);
+}
+
+[data-theme='dark'] {
+  --bg: #09090b;
+  --bg-elevated: #131316;
+  --bg-sunken: #050507;
+
+  --fg: #fafafa;
+  --fg-muted: #a1a1aa;
+  --fg-subtle: #71717a;
+
+  --border: #26262b;
+  --border-strong: #3f3f46;
+
+  --accent: #818cf8;
+  --accent-hover: #a5b4fc;
+  --accent-fg: #09090b;
+  --accent-subtle: #1e1b3a;
+
+  --ok: #4ade80;
+  --ok-subtle: #052e16;
+  --warn: #fbbf24;
+  --warn-subtle: #2a1a02;
+  --danger: #f87171;
+  --danger-subtle: #2a0808;
+  --info: #60a5fa;
+  --info-subtle: #08203f;
+
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-2: 0 2px 8px rgba(0, 0, 0, 0.5);
+  --shadow-3: 0 8px 24px rgba(0, 0, 0, 0.6);
+}
