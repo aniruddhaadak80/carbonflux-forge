@@ -182,11 +182,11 @@ Three pure functions in `services/engine`, and the reason they are code rather t
 the product's entire claim: an auditor must get the same number forever, and be able to point at the
 line that produced it.
 
-| Function            | What it guarantees                                                                       |
-| ------------------- | ---------------------------------------------------------------------------------------- |
-| `recompute_claim`   | `Decimal` arithmetic, factor uncertainty propagated, `ROUND_HALF_EVEN` to significant figures. A malformed cell is a *finding*, not a crash. |
-| `walk_provenance`   | Depth-first support walk with explicit cycle detection, a hard visit budget, and chain reconstruction capped at 8 paths. |
-| `forge_verdict`     | Folds both into `supported` / `unsupported` / `circular` / `unverified`, then **seals** it. |
+| Function          | What it guarantees                                                                                                                           |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `recompute_claim` | `Decimal` arithmetic, factor uncertainty propagated, `ROUND_HALF_EVEN` to significant figures. A malformed cell is a _finding_, not a crash. |
+| `walk_provenance` | Depth-first support walk with explicit cycle detection, a hard visit budget, and chain reconstruction capped at 8 paths.                     |
+| `forge_verdict`   | Folds both into `supported` / `unsupported` / `circular` / `unverified`, then **seals** it.                                                  |
 
 No clock, no network, no randomness, no filesystem. Called as a subprocess over JSON, so two
 concurrent invocations cannot interfere. Run it yourself:
@@ -245,17 +245,17 @@ asymmetry is why adding to `packages/core` first is the most common review comme
 
 ## What ships
 
-| Surface              | Status  | What it is                                                              |
-| -------------------- | ------- | ----------------------------------------------------------------------- |
-| Deterministic engine | shipped | pure Python, `Decimal` arithmetic, graph walk, verdict sealing          |
+| Surface              | Status  | What it is                                                                                      |
+| -------------------- | ------- | ----------------------------------------------------------------------------------------------- |
+| Deterministic engine | shipped | pure Python, `Decimal` arithmetic, graph walk, verdict sealing                                  |
 | CLI                  | shipped | `forge`, `forge-all`, `claims`, `lineage`, `recompute`, `evidence`, `export`, `doctor`, `tools` |
-| MCP server + client  | shipped | the same 13 tools over stdio, proven by `npm run e2e:mcp`               |
-| Web notebook         | shipped | server-rendered claims, verdicts and provenance chains, deployed to Vercel |
-| Memory               | shipped | SQLite, WAL, numbered migrations, content-addressed documents and claims |
-| Skills catalog       | shipped | `SKILL.md` discovery, validation, `metadata.version` gating             |
-| Plugin registry      | shipped | manifest validation, priority conflict resolution                        |
-| Channels             | shipped | one `Channel` interface; the export adapter writes NDJSON verdicts      |
-| Desktop shell        | shipped | Electron around the web build                                           |
+| MCP server + client  | shipped | the same 13 tools over stdio, proven by `npm run e2e:mcp`                                       |
+| Web notebook         | shipped | server-rendered claims, verdicts and provenance chains, deployed to Vercel                      |
+| Memory               | shipped | SQLite, WAL, numbered migrations, content-addressed documents and claims                        |
+| Skills catalog       | shipped | `SKILL.md` discovery, validation, `metadata.version` gating                                     |
+| Plugin registry      | shipped | manifest validation, priority conflict resolution                                               |
+| Channels             | shipped | one `Channel` interface; the export adapter writes NDJSON verdicts                              |
+| Desktop shell        | shipped | Electron around the web build                                                                   |
 
 ### Deliberate omissions
 

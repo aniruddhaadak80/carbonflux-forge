@@ -1,12 +1,28 @@
 import { mkdtempSync, mkdirSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
-import { join } from 'node:path'
+import { join, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { afterEach, describe, expect, it } from 'vitest'
 import { buildToolRegistry, createContext } from './bootstrap.js'
-import { claimAddress, evidenceSet, forgeInputFor, loadSeed, openSeededStore, seedStore } from './forge-service.js'
+import {
+  claimAddress,
+  evidenceSet,
+  forgeInputFor,
+  loadSeed,
+  openSeededStore,
+  seedStore,
+} from './forge-service.js'
 
 const dirs: string[] = []
-const REPO = process.cwd()
+
+/**
+ * The repository root, found by walking up from this file rather than from `process.cwd()`.
+ *
+ * `npm test --workspace` runs vitest with the *package* directory as the cwd, so a test that
+ * assumed the repo root would pass locally and fail in CI — and it did. Resolving from
+ * `import.meta.url` makes the path correct regardless of who launched the runner.
+ */
+const REPO = resolve(fileURLToPath(new URL('.', import.meta.url)), '..', '..', '..')
 
 /** A data directory per test, so no test can see another's verdicts. */
 function dataDir(): string {
@@ -147,9 +163,7 @@ describe('seeding', () => {
     const store = openSeededStore(REPO, dataDir()).store
     const broken = {
       period: '2026-Q1',
-      documents: [
-        { ref: 'f', kind: 'emission-factor' as const, label: 'F', content: 'x', trusted: true },
-      ],
+      documents: [{ ref: 'f', kind: 'emission-factor' as const, label: 'F', content: 'x', trusted: true }],
       claims: [
         {
           id: 'a',
@@ -312,9 +326,7 @@ describe('input validation happens before the handler', () => {
   })
 
   it('rejects a non-string period', async () => {
-    await expect(invokeTool('list_claims', { period: 42 }, dataDir())).rejects.toThrow(
-      /must be a string/,
-    )
+    await expect(invokeTool('list_claims', { period: 42 }, dataDir())).rejects.toThrow(/must be a string/)
   })
 
   it('rejects ingest_evidence without content', async () => {

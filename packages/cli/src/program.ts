@@ -1,3 +1,5 @@
+import { resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { Command } from 'commander'
 import { buildToolRegistry, createContext } from './bootstrap.js'
 import { doctor, renderReport } from './doctor.js'
@@ -13,6 +15,16 @@ import {
 const VERSION = '0.1.0'
 
 /** Exit codes are part of the contract: 0 ok, 1 runtime failure, 2 usage error. */
+/**
+ * The repository root, resolved by walking up from this module rather than from `process.cwd()`.
+ *
+ * `npm test --workspace <pkg>` runs vitest with the package directory as the cwd, so anything
+ * resolving `examples/`, `skills/` or `plugins/` from the cwd breaks in CI while working
+ * interactively. Anchoring to the module makes every surface — CLI, MCP, tests — find the same
+ * repository regardless of who invoked it.
+ */
+export const REPO_ROOT = resolve(fileURLToPath(new URL('.', import.meta.url)), '..', '..', '..')
+
 export function buildProgram(): Command {
   const program = new Command()
 
@@ -32,7 +44,7 @@ export function buildProgram(): Command {
     .description('diagnose every subsystem and print an actionable report')
     .option('--json', 'machine-readable output')
     .action(async () => {
-      const report = await doctor()
+      const report = await doctor(REPO_ROOT)
       process.stdout.write(
         process.argv.includes('--json')
           ? `${JSON.stringify(report, null, 2)}\n`
@@ -46,7 +58,7 @@ export function buildProgram(): Command {
     .description('list the registered tools — the authoritative capability list')
     .option('--json', 'machine-readable output')
     .action(() => {
-      const registry = buildToolRegistry()
+      const registry = buildToolRegistry(REPO_ROOT)
       const tools = registry.list().map((tool) => ({
         name: tool.name,
         description: tool.description,
@@ -69,7 +81,7 @@ export function buildProgram(): Command {
 
   /** Every command goes through the registry, so the CLI can never drift from the MCP surface. */
   const invoke = async (tool: string, input: unknown): Promise<unknown> => {
-    const registry = buildToolRegistry()
+    const registry = buildToolRegistry(REPO_ROOT)
     try {
       return await registry.invoke(tool, input, createContext('cli'), [...GRANTS])
     } catch (cause) {
@@ -228,7 +240,7 @@ export function buildProgram(): Command {
     .description('run the MCP server over stdio')
     .action(async () => {
       const { serveStdio } = await import('@carbonfluxforge/mcp')
-      const registry = buildToolRegistry()
+      const registry = buildToolRegistry(REPO_ROOT)
       // stdout belongs to the protocol from here on; diagnostics must go to stderr.
       await serveStdio(registry, createContext('mcp'))
     })
@@ -247,7 +259,7 @@ export function buildProgram(): Command {
         process.exitCode = 2
         return
       }
-      const registry = buildToolRegistry()
+      const registry = buildToolRegistry(REPO_ROOT)
       try {
         const value = await registry.invoke(tool, parsed, createContext('cli'), [
           'fs:read',
@@ -273,7 +285,7 @@ export function buildProgram(): Command {
             version: VERSION,
             node: process.versions.node,
             platform: process.platform,
-            tools: buildToolRegistry().size,
+            tools: buildToolRegistry(REPO_ROOT).size,
           },
           null,
           2,
