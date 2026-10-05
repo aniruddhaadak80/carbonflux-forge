@@ -225,9 +225,20 @@ def _decimal(raw: Any, field: str, defects: list[Defect]) -> Decimal:
 
 def _clamped_int(payload: Any, field: str, default: int, low: int, high: int) -> int:
     raw = payload.get(field, default) if isinstance(payload, dict) else default
-    if isinstance(raw, bool) or not isinstance(raw, int):
-        return default
-    return max(low, min(high, raw))
+    return _clamp(raw, low, high, default)
+
+
+def _tolerance(raw: Any) -> Decimal:
+    """Parse a tolerance percentage, refusing rather than defaulting on a malformed value.
+
+    Defaulting a bad tolerance to 2% would silently change which claims pass, so a caller error
+    has to be loud.
+    """
+    defects: list[Defect] = []
+    value = _decimal(raw, "tolerancePct", defects)
+    if defects:
+        raise EngineError("NOT_A_DECIMAL", defects[0]["message"])
+    return abs(value)
 
 
 # --------------------------------------------------------------------------- recompute
@@ -399,6 +410,148 @@ def _plain(value: Decimal) -> str:
 # --------------------------------------------------------------------------- provenance walk
 
 
+class _IndexedGraph:
+    """The graph resolved once, so the walk itself reads a plain structure.
+
+    Edge classification happens here rather than inside the walk: whether an edge carries support
+    or records a replacement is a property of the graph, not of the traversal, and resolving it
+    separately keeps each function honest about what it decides.
+    """
+
+    def __init__(self, graph: Graph, defects: list[Defect]) -> None:
+        self.nodes: dict[str, Node] = {}
+        for node in graph.get("nodes", []):
+            identifier = node.get("id")
+            if isinstance(identifier, str):
+                self.nodes[identifier] = node
+
+        self.support: dict[str, list[str]] = {identifier: [] for identifier in self.nodes}
+        self.replaced: set[str] = set()
+
+        for edge in graph.get("edges", []):
+            source = edge.get("from")
+            target = edge.get("to")
+            relation = edge.get("relation")
+            if not isinstance(source, str) or not isinstance(target, str):
+                continue
+            if not isinstance(relation, str):
+                continue
+            if source not in self.nodes:
+                defects.append({
+                    "code": "DANGLING_EDGE",
+                    "message": f"edge starts at unknown {source!r}",
+                    "node": source,
+                })
+                continue
+            if target not in self.nodes:
+                defects.append({
+                    "code": "DANGLING_EDGE",
+                    "message": f"edge points at unknown {target!r}",
+                    "node": target,
+                })
+                continue
+            if relation in REPLACEMENT_RELATIONS:
+                self.replaced.add(target)
+            elif relation in SUPPORT_RELATIONS:
+                self.support[source].append(target)
+
+        # Sorted so two runs over the same graph explore children in the same order, which is what
+        # makes a reported cycle path reproducible rather than incidentally different.
+        for children in self.support.values():
+            children.sort()
+
+
+class _WalkState:
+    """Mutable traversal state, held separately so the walk function stays flat enough to read."""
+
+    def __init__(self, budget: int) -> None:
+        self.budget = budget
+        self.visited = 0
+        self.budget_exhausted = False
+        self.support_depth = 0
+        self.cycle: list[str] | None = None
+        self.seen: set[str] = set()
+        self.on_stack: list[str] = []
+        self.on_stack_set: set[str] = set()
+        self.parent: dict[str, str] = {}
+        self.terminals: list[Terminal] = []
+
+    def enter(self, identifier: str, depth: int) -> None:
+        self.seen.add(identifier)
+        self.on_stack.append(identifier)
+        self.on_stack_set.add(identifier)
+        self.support_depth = max(self.support_depth, depth)
+
+    def exit(self) -> None:
+        if self.on_stack:
+            self.on_stack_set.discard(self.on_stack.pop())
+
+    def record_terminal(self, identifier: str, node: Node) -> None:
+        self.terminals.append({
+            "id": identifier,
+            "address": str(node.get("address", "")),
+            "kind": str(node.get("kind", "")),
+        })
+
+    def reset(self) -> None:
+        self.on_stack.clear()
+        self.on_stack_set.clear()
+
+
+def _push_children(
+    indexed: _IndexedGraph,
+    state: _WalkState,
+    stack: list[tuple[str, int]],
+    identifier: str,
+    depth: int,
+) -> None:
+    """Push every child, including ones already seen.
+
+    Pruning seen children here is exactly what would hide a cycle: the back edge that makes
+    provenance circular always points at a node already on the path. Already-explored nodes are
+    discarded when they are popped instead.
+    """
+    for child in reversed(indexed.support.get(identifier, [])):
+        if child not in state.seen and child not in state.parent:
+            state.parent[child] = identifier
+        stack.append((child, depth + 1))
+
+
+def _vet_node(indexed: _IndexedGraph, identifier: str, defects: list[Defect]) -> None:
+    """Vet every node the walk relies on, terminals included.
+
+    An untrusted or superseded document is a finding whether or not anything else descends from
+    it — the worst evidence is often the terminal one.
+    """
+    if not bool(indexed.nodes[identifier].get("trusted", True)):
+        defects.append({
+            "code": "UNTRUSTED_NODE",
+            "message": f"{identifier!r} is not trusted",
+            "node": identifier,
+        })
+    if identifier in indexed.replaced:
+        defects.append({
+            "code": "SUPERSEDED_NODE",
+            "message": f"{identifier!r} was replaced by a newer revision but is still relied on",
+            "node": identifier,
+        })
+
+
+def _empty_walk(root: str, budget: int, defects: list[Defect]) -> Walk:
+    return {
+        "root": root,
+        "visited": 0,
+        "budget": budget,
+        "budgetExhausted": False,
+        "supportDepth": 0,
+        "terminals": [],
+        "paths": [],
+        "pathsTruncated": False,
+        "cycle": None,
+        "defects": sorted(defects, key=lambda d: (d["code"], d["node"])),
+    }
+
+
 def walk_provenance(graph: Graph, root: str, budget: int) -> Walk:
     """Walk support from a claim to the evidence that grounds it.
 
@@ -414,58 +567,15 @@ def walk_provenance(graph: Graph, root: str, budget: int) -> Walk:
       graph but is no longer usable support.
     """
     defects: list[Defect] = []
-    nodes: dict[str, Node] = {}
-    for node in graph.get("nodes", []):
-        identifier = node.get("id")
-        if isinstance(identifier, str):
-            nodes[identifier] = node
-
-    support: dict[str, list[str]] = {identifier: [] for identifier in nodes}
-    replaced: set[str] = set()
-
-    for edge in graph.get("edges", []):
-        source = edge.get("from")
-        target = edge.get("to")
-        relation = edge.get("relation")
-        if not isinstance(source, str) or not isinstance(target, str):
-            continue
-        if not isinstance(relation, str):
-            continue
-        if source not in nodes:
-            defects.append({"code": "DANGLING_EDGE", "message": f"edge starts at unknown {source!r}",
-                            "node": source})
-            continue
-        if target not in nodes:
-            defects.append({"code": "DANGLING_EDGE", "message": f"edge points at unknown {target!r}",
-                            "node": target})
-            continue
-        if relation in REPLACEMENT_RELATIONS:
-            replaced.add(target)
-        elif relation in SUPPORT_RELATIONS:
-            support[source].append(target)
-
-    for identifier in support:
-        support[identifier].sort()
+    indexed = _IndexedGraph(graph, defects)
+    nodes = indexed.nodes
 
     if root not in nodes:
         defects.append({"code": "DANGLING_EDGE", "message": f"root {root!r} is not in the graph",
                         "node": root})
-        return {
-            "root": root, "visited": 0, "budget": budget, "budgetExhausted": False,
-            "supportDepth": 0, "terminals": [], "paths": [], "pathsTruncated": False,
-            "cycle": None,
-            "defects": sorted(defects, key=lambda d: (d["code"], d["node"])),
-        }
+        return _empty_walk(root, budget, defects)
 
-    seen: set[str] = set()
-    on_stack: list[str] = []
-    on_stack_set: set[str] = set()
-    parent: dict[str, str] = {}
-    terminals: list[Terminal] = []
-    cycle: list[str] | None = None
-    visited = 0
-    budget_exhausted = False
-    support_depth = 0
+    state = _WalkState(budget)
 
     # Explicit stack: (node, depth). Recursion would put a 10,000-node graph at the mercy of the
     # interpreter's stack limit, which is exactly the case the budget exists to survive.
@@ -473,62 +583,40 @@ def walk_provenance(graph: Graph, root: str, budget: int) -> Walk:
 
     while stack:
         identifier, depth = stack.pop()
-        if cycle is not None or budget_exhausted:
+        if state.cycle is not None or state.budget_exhausted:
             break
 
         # A node still on the stack means an edge points back into the current path: that is a
         # cycle. It must be checked before `seen`, or the back edge would have been pruned.
-        if identifier in on_stack_set:
-            start = on_stack.index(identifier)
-            cycle = [*on_stack[start:], identifier]
+        if identifier in state.on_stack_set:
+            start = state.on_stack.index(identifier)
+            state.cycle = [*state.on_stack[start:], identifier]
             break
 
-        if identifier in seen:
+        if identifier in state.seen:
             continue
 
-        visited += 1
-        if visited > budget:
-            budget_exhausted = True
+        state.visited += 1
+        if state.visited > budget:
+            state.budget_exhausted = True
             break
 
-        seen.add(identifier)
-        on_stack.append(identifier)
-        on_stack_set.add(identifier)
-        support_depth = max(support_depth, depth)
+        state.enter(identifier, depth)
+        _vet_node(indexed, identifier, defects)
 
-        # Vet every node the walk relies on, terminals included: an untrusted or superseded
-        # document is a finding whether or not anything else descends from it.
-        if not bool(nodes[identifier].get("trusted", True)):
-            defects.append({"code": "UNTRUSTED_NODE", "message": f"{identifier!r} is not trusted",
-                            "node": identifier})
-        if identifier in replaced:
-            defects.append({
-                "code": "SUPERSEDED_NODE",
-                "message": f"{identifier!r} was replaced by a newer revision but is still relied on",
-                "node": identifier,
-            })
-
-        children = support.get(identifier, [])
+        children = indexed.support.get(identifier, [])
         if not children:
-            node = nodes[identifier]
-            terminals.append({
-                "id": identifier,
-                "address": str(node.get("address", "")),
-                "kind": str(node.get("kind", "")),
-            })
-            on_stack.pop()
-            on_stack_set.discard(identifier)
+            state.record_terminal(identifier, nodes[identifier])
+            state.exit()
             continue
 
-        # Every child is pushed, including ones already seen: pruning here is exactly what would
-        # hide a cycle. Already-explored nodes are discarded when they are popped.
-        for child in reversed(children):
-            if child not in seen and child not in parent:
-                parent[child] = identifier
-            stack.append((child, depth + 1))
+        _push_children(indexed, state, stack, identifier, depth)
 
-    on_stack.clear()
-    on_stack_set.clear()
+    cycle = state.cycle
+    budget_exhausted = state.budget_exhausted
+    terminals = state.terminals
+    parent = state.parent
+    state.reset()
 
     if cycle is not None:
         defects.append({
@@ -561,10 +649,10 @@ def walk_provenance(graph: Graph, root: str, budget: int) -> Walk:
 
     return {
         "root": root,
-        "visited": visited,
+        "visited": state.visited,
         "budget": budget,
         "budgetExhausted": budget_exhausted,
-        "supportDepth": support_depth,
+        "supportDepth": state.support_depth,
         "terminals": terminals,
         "paths": paths,
         "pathsTruncated": paths_truncated,
@@ -576,14 +664,37 @@ def walk_provenance(graph: Graph, root: str, budget: int) -> Walk:
 # --------------------------------------------------------------------------- verdict
 
 
+class ForgeSettings:
+    """The three knobs that shape a verdict, bundled so the call site stays readable.
+
+    These default to values chosen for a quarterly GHG inventory and are clamped to sane ranges:
+    a caller cannot ask for 400 significant figures and get a number nobody can defend.
+    """
+
+    def __init__(
+        self,
+        root: str | None = None,
+        budget: int = DEFAULT_BUDGET,
+        sigfigs: int = DEFAULT_SIGFIGS,
+        tolerance_pct: str = DEFAULT_TOLERANCE_PCT,
+    ) -> None:
+        self.root = root
+        self.budget = _clamp(budget, 1, 1_000_000, DEFAULT_BUDGET)
+        self.sigfigs = _clamp(sigfigs, MIN_SIGFIGS, MAX_SIGFIGS, DEFAULT_SIGFIGS)
+        self.tolerance_pct = tolerance_pct
+
+
+def _clamp(value: int, low: int, high: int, default: int) -> int:
+    if isinstance(value, bool) or not isinstance(value, int):
+        return default
+    return max(low, min(high, value))
+
+
 def forge_verdict(
     claim: Claim,
     documents: list[Document],
     graph: Graph,
-    root: str,
-    budget: int,
-    sigfigs: int,
-    tolerance_pct: Decimal,
+    settings: ForgeSettings,
 ) -> Verdict:
     """Fold the arithmetic and the provenance walk into one status, and seal it.
 
@@ -591,8 +702,10 @@ def forge_verdict(
     three each invalidate the question the fourth would answer: a claim whose provenance loops
     cannot be verified no matter how well its arithmetic checks out.
     """
-    computation = recompute_claim(claim, documents, sigfigs, tolerance_pct)
-    walk = walk_provenance(graph, root, budget)
+    root = settings.root or str(claim.get("id", ""))
+    tolerance = _tolerance(settings.tolerance_pct)
+    computation = recompute_claim(claim, documents, settings.sigfigs, tolerance)
+    walk = walk_provenance(graph, root, settings.budget)
 
     reasons: list[str] = []
     for defect in [*computation["defects"], *walk["defects"]]:
@@ -666,12 +779,13 @@ def op_recompute(payload: Any) -> Computation:
         raise EngineError("BAD_SHAPE", "expected an object with 'claim'")
     claim = _obj(payload, "claim")
     documents = _obj_list(payload, "documents")
-    sigfigs = _clamped_int(payload, "sigFigs", DEFAULT_SIGFIGS, MIN_SIGFIGS, MAX_SIGFIGS)
-    defects: list[Defect] = []
-    tolerance = _decimal(payload.get("tolerancePct", DEFAULT_TOLERANCE_PCT), "tolerancePct", defects)
-    if defects:
-        raise EngineError("NOT_A_DECIMAL", defects[0]["message"])
-    return recompute_claim(claim, documents, sigfigs, tolerance)  # type: ignore[arg-type]
+    settings = ForgeSettings(
+        budget=_clamped_int(payload, "budget", DEFAULT_BUDGET, 1, 1_000_000),
+        sigfigs=_clamped_int(payload, "sigFigs", DEFAULT_SIGFIGS, MIN_SIGFIGS, MAX_SIGFIGS),
+        tolerance_pct=payload.get("tolerancePct", DEFAULT_TOLERANCE_PCT),
+    )
+    tolerance = _tolerance(settings.tolerance_pct)
+    return recompute_claim(claim, documents, settings.sigfigs, tolerance)  # type: ignore[arg-type]
 
 
 def op_walk(payload: Any) -> Walk:
@@ -690,17 +804,13 @@ def op_forge(payload: Any) -> Verdict:
         raise EngineError("BAD_SHAPE", "expected an object with 'claim'")
     claim, documents, graph = _collect(payload)
     root = payload.get("root")
-    if not isinstance(root, str) or not root:
-        root = str(claim.get("id", ""))
-    budget = _clamped_int(payload, "budget", DEFAULT_BUDGET, 1, 1_000_000)
-    sigfigs = _clamped_int(payload, "sigFigs", DEFAULT_SIGFIGS, MIN_SIGFIGS, MAX_SIGFIGS)
-    defects: list[Defect] = []
-    tolerance = _decimal(payload.get("tolerancePct", DEFAULT_TOLERANCE_PCT), "tolerancePct", defects)
-    if defects:
-        raise EngineError("NOT_A_DECIMAL", defects[0]["message"])
-    return forge_verdict(  # type: ignore[arg-type]
-        claim, documents, graph, root, budget, sigfigs, tolerance
+    settings = ForgeSettings(
+        root=root if isinstance(root, str) and root else None,
+        budget=_clamped_int(payload, "budget", DEFAULT_BUDGET, 1, 1_000_000),
+        sigfigs=_clamped_int(payload, "sigFigs", DEFAULT_SIGFIGS, MIN_SIGFIGS, MAX_SIGFIGS),
+        tolerance_pct=payload.get("tolerancePct", DEFAULT_TOLERANCE_PCT),
     )
+    return forge_verdict(claim, documents, graph, settings)  # type: ignore[arg-type]
 
 
 FORGE_OPERATIONS: Final[dict[str, Any]] = {

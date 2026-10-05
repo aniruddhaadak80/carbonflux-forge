@@ -6,3 +6,6 @@ coverage
 package-lock.json
 services/engine/.venv
 CHANGELOG.md
+
+# Local deployment tooling state, not source.
+.vercel

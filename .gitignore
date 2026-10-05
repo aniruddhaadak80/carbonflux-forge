@@ -7,6 +7,9 @@ coverage/
 .turbo/
 *.tsbuildinfo
 
+# Local deployment tooling state.
+.vercel/
+
 # Runtime state: the content-addressed store is rebuilt from examples/inventory.json on first use.
 .data/
 *.sqlite

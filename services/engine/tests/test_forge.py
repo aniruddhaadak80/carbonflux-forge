@@ -4,8 +4,11 @@ import pytest
 from hypothesis import given, settings
 from hypothesis import strategies as st
 
+from carbonflux_forge.analysis import OPERATIONS, analyse
 from carbonflux_forge.forge import (
     MASS_UNITS,
+    MAX_SIGFIGS,
+    ForgeSettings,
     forge_verdict,
     recompute_claim,
     round_significant,
@@ -56,6 +59,16 @@ def node(identifier: str, address: str, kind: str, trusted: bool = True) -> dict
 
 def graph(nodes: list[dict[str, object]], edges: list[dict[str, str]]) -> dict[str, object]:
     return {"nodes": nodes, "edges": edges}
+
+
+def verdict_settings(
+    root: str | None = None,
+    budget: int = 1000,
+    sigfigs: int = 6,
+    tolerance: str = "2",
+) -> ForgeSettings:
+    """The default verdict settings every test uses, overridable per case."""
+    return ForgeSettings(root=root, budget=budget, sigfigs=sigfigs, tolerance_pct=tolerance)
 
 
 class TestRoundSignificant:
@@ -286,16 +299,14 @@ class TestForgeVerdict:
 
     def test_supported_when_the_evidence_reproduces_the_number(self) -> None:
         nodes, edges = self.build()
-        result = forge_verdict(claim(), [document()], graph(nodes, edges),  # type: ignore[arg-type]
-                               "scope1-stationary-combustion", 1000, 6, Decimal("2"))
+        result = forge_verdict(claim(), [document()], graph(nodes, edges), verdict_settings("scope1-stationary-combustion"))
         assert result["status"] == "supported"
         assert result["reasons"] == []
         assert result["seal"].startswith("sha256:")
 
     def test_unsupported_when_the_number_does_not_reproduce(self) -> None:
         nodes, edges = self.build()
-        result = forge_verdict(claim(reportedTonnes="9.9"), [document()], graph(nodes, edges),  # type: ignore[arg-type]
-                               "scope1-stationary-combustion", 1000, 6, Decimal("2"))
+        result = forge_verdict(claim(reportedTonnes="9.9"), [document()], graph(nodes, edges), verdict_settings("scope1-stationary-combustion"))
         assert result["status"] == "unsupported"
         assert any(r.startswith("DELTA_OVER_TOLERANCE") for r in result["reasons"])
 
@@ -304,31 +315,25 @@ class TestForgeVerdict:
         # add a cycle back to the claim
         edges = [*edges, {"from": "factor", "to": "scope1-stationary-combustion",
                           "relation": "derived-from"}]
-        result = forge_verdict(claim(reportedTonnes="9.9"), [document()], graph(nodes, edges),  # type: ignore[arg-type]
-                               "scope1-stationary-combustion", 1000, 6, Decimal("2"))
+        result = forge_verdict(claim(reportedTonnes="9.9"), [document()], graph(nodes, edges), verdict_settings("scope1-stationary-combustion"))
         assert result["status"] == "circular"
 
     def test_unverified_when_nothing_is_grounded(self) -> None:
         nodes = [node("only", "sha256:x", "activity-data")]
-        result = forge_verdict(claim(), [document()], graph(nodes, []),  # type: ignore[arg-type]
-                               "only", 1000, 6, Decimal("2"))
+        result = forge_verdict(claim(), [document()], graph(nodes, []), verdict_settings("only"))
         # The claim itself is a terminal, so it is grounded in itself: unverified, not supported.
         assert result["status"] in {"unsupported", "unverified"}
 
     def test_seal_is_stable_for_identical_inputs(self) -> None:
         nodes, edges = self.build()
-        one = forge_verdict(claim(), [document()], graph(nodes, edges),  # type: ignore[arg-type]
-                            "scope1-stationary-combustion", 1000, 6, Decimal("2"))
-        two = forge_verdict(claim(), [document()], graph(nodes, edges),  # type: ignore[arg-type]
-                            "scope1-stationary-combustion", 1000, 6, Decimal("2"))
+        one = forge_verdict(claim(), [document()], graph(nodes, edges), verdict_settings("scope1-stationary-combustion"))
+        two = forge_verdict(claim(), [document()], graph(nodes, edges), verdict_settings("scope1-stationary-combustion"))
         assert one["seal"] == two["seal"]
 
     def test_seal_changes_when_the_verdict_changes(self) -> None:
         nodes, edges = self.build()
-        one = forge_verdict(claim(), [document()], graph(nodes, edges),  # type: ignore[arg-type]
-                            "scope1-stationary-combustion", 1000, 6, Decimal("2"))
-        two = forge_verdict(claim(reportedTonnes="9.9"), [document()], graph(nodes, edges),  # type: ignore[arg-type]
-                            "scope1-stationary-combustion", 1000, 6, Decimal("2"))
+        one = forge_verdict(claim(), [document()], graph(nodes, edges), verdict_settings("scope1-stationary-combustion"))
+        two = forge_verdict(claim(reportedTonnes="9.9"), [document()], graph(nodes, edges), verdict_settings("scope1-stationary-combustion"))
         assert one["seal"] != two["seal"]
 
     def test_budget_exhaustion_is_unverified_not_supported(self) -> None:
@@ -337,7 +342,7 @@ class TestForgeVerdict:
         edges = [{"from": "root", "to": "n0", "relation": "derived-from"}]
         edges += [{"from": f"n{i}", "to": f"n{i + 1}", "relation": "derived-from"} for i in range(9)]
         result = forge_verdict(claim(), [document()], graph(nodes, edges),  # type: ignore[arg-type]
-                               "root", 3, 6, Decimal("2"))
+                               verdict_settings("root", budget=3))
         assert result["status"] == "unverified"
         assert result["walk"]["budgetExhausted"] is True
 
@@ -358,12 +363,8 @@ class TestForgeVerdict:
             "sigFigs": sigfigs,
             "tolerancePct": "2",
         }
-        one = forge_verdict(base["claim"], base["documents"], base["graph"],  # type: ignore[arg-type]
-                            base["root"],  # type: ignore[arg-type]
-                            1000, sigfigs, Decimal("2"))
-        two = forge_verdict(base["claim"], base["documents"], base["graph"],  # type: ignore[arg-type]
-                            base["root"],  # type: ignore[arg-type]
-                            1000, sigfigs, Decimal("2"))
+        one = forge_verdict(base["claim"], base["documents"], base["graph"], verdict_settings(base["root"], sigfigs=sigfigs))
+        two = forge_verdict(base["claim"], base["documents"], base["graph"], verdict_settings(base["root"], sigfigs=sigfigs))
         assert one == two
 
 
@@ -389,15 +390,29 @@ class TestSeal:
 
 class TestOperationEntryPoints:
     def test_unknown_op_lists_the_available_ones(self) -> None:
-        from carbonflux_forge.analysis import analyse
-
         with pytest.raises(EngineError) as caught:
             analyse("nonexistent", {})
         assert caught.value.code == "UNKNOWN_OP"
         assert "forge" in caught.value.message
 
     def test_every_forge_op_is_registered(self) -> None:
-        from carbonflux_forge.analysis import OPERATIONS
-
         for op in ("recompute", "walk", "forge", "normalize", "diff", "summarize"):
             assert op in OPERATIONS
+
+    def test_a_malformed_tolerance_is_refused_rather_than_defaulted(self) -> None:
+        # Defaulting a bad tolerance would silently change which claims pass.
+        with pytest.raises(EngineError) as caught:
+            analyse("forge", {"claim": claim(), "documents": [], "graph": graph([], []),
+                              "tolerancePct": "two percent"})
+        assert caught.value.code == "NOT_A_DECIMAL"
+
+    def test_out_of_range_settings_are_clamped(self) -> None:
+        # A caller asking for 400 significant figures gets the ceiling, not an undefendable number.
+        tight = ForgeSettings(sigfigs=400, budget=-5)
+        assert tight.sigfigs == MAX_SIGFIGS
+        assert tight.budget == 1
+
+    def test_forge_through_the_wire_defaults_the_root_to_the_claim(self) -> None:
+        verdict = analyse("forge", {"claim": claim(), "documents": [document()],
+                                    "graph": graph([], [])})
+        assert verdict["claimId"] == claim()["id"]
